@@ -69,6 +69,6 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     yum -y update
-    yum -y install kernel-devel
+    yum -y install kernel-devel gcc
   SHELL
 end
