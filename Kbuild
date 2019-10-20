@@ -1,5 +1,12 @@
 MODNAME ?= implant
 
-EXTRA_CFLAGS := -I$(PWD)/include -I$(PWD)/src
+ccflags-y := -I$(src)/include
 
-obj-m += src/$(MODNAME).o
+obj-m := $(MODNAME).o
+
+# add c files
+SRCS += src/implant.c
+
+OBJS := $(SRCS:.c=.o)
+
+$(MODNAME)-y := $(OBJS)
