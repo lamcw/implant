@@ -61,3 +61,10 @@ dkms.conf
 
 ### Vagrant Patch ###
 *.box
+
+### Tools ###
+compile_commands.json
+
+### ksource artefacts ###
+ksource
+usr/
