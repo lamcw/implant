@@ -69,6 +69,6 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update -y && apt-get dist-upgrade -y
-    apt-get install -y linux-headers-$(uname -r) build-essential
+    apt-get install -y linux-headers-4.19.0-6-amd64 build-essential
   SHELL
 end
