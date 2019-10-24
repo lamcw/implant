@@ -30,8 +30,10 @@ ksource:
 	rm -rf control.tar.gz data.tar.gz debian-binary linux-source-4.19_4.19.67-2+deb10u1_all.deb
 
 clean:
-	make -C $(KDIR) M=`pwd` clean; \
-		rm -rf usr ksource
+	make -C $(KDIR) M=`pwd` clean
+
+distclean: clean
+	rm -rf usr ksource
 
 format:
 	type clang-format > /dev/null && git ls-files "*.c" "*.h" | xargs clang-format -i
