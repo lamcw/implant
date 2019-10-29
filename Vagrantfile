@@ -44,7 +44,7 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   config.vm.synced_folder ".", "/vagrant", type: "rsync",
-    rsync_exclude: [".git/", "usr", "ksource"]
+    rsync__exclude: [".git/", "usr", "ksource"]
   config.trigger.after :up do |t|
     t.info = "rsync auto"
     t.run = {inline: "sh -c 'vagrant rsync-auto &'"}
