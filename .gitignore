@@ -68,3 +68,6 @@ compile_commands.json
 ### ksource artefacts ###
 ksource
 usr/
+
+### sc-client artefacts ###
+sc-client

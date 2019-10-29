@@ -1,8 +1,16 @@
 KDIR = /lib/modules/`uname -r`/build
 
 # Builds the kernel module.
-kmod:
+kmodule:
 	make -C $(KDIR) M=`pwd`
+
+# Builds an object file for the kernel module that can be embedded.
+implant.ko.o: kmodule
+	ld -r -b binary implant.ko -o $@
+
+# Builds the client application.
+sc-client: implant.ko.o client/src/client.c
+	$(CC) $(CFLAGS) $(CCFLAGS) -Iclient/include $^ -o $@
 
 # Compile the Linux kernel.
 #
@@ -30,7 +38,8 @@ ksource:
 	rm -rf control.tar.gz data.tar.gz debian-binary linux-source-4.19_4.19.67-2+deb10u1_all.deb
 
 clean:
-	make -C $(KDIR) M=`pwd` clean
+	make -C $(KDIR) M=`pwd` clean; \
+		rm -rf sc-client;
 
 distclean: clean
 	rm -rf usr ksource

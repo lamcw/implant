@@ -1,6 +1,6 @@
 MODNAME ?= implant
 
-ccflags-y := -I$(src)/include
+ccflags-y := -I$(src)/kmod/include
 
 ifneq ($(IMPLANT_DEVICE_NAME),)
 ccflags-y += -DIMPLANT_DEVICE_NAME=$(IMPLANT_DEVICE_NAME)
@@ -13,11 +13,11 @@ endif
 obj-m := $(MODNAME).o
 
 # add c files
-SRCS += src/implant.c
-SRCS += src/privilege_escalation.c
-SRCS += src/hide_proc.c
-SRCS += src/commands.c
-SRCS += src/ketopt.c
+SRCS += kmod/src/implant.c
+SRCS += kmod/src/privilege_escalation.c
+SRCS += kmod/src/hide_proc.c
+SRCS += kmod/src/commands.c
+SRCS += kmod/src/ketopt.c
 
 OBJS := $(SRCS:.c=.o)
 
