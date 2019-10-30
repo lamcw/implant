@@ -9,7 +9,7 @@ implant.ko.o: kmodule
 	ld -r -b binary implant.ko -o $@
 
 # Builds the client application.
-sc-client: implant.ko.o client/src/client.c
+sc-client: implant.ko.o client/src/*
 	$(CC) $(CFLAGS) $(CCFLAGS) -Iclient/include $^ -o $@
 
 # Compile the Linux kernel.
