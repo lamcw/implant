@@ -1,3 +1,5 @@
+#include <debug.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,6 +39,7 @@ int install(void)
 
 	int fd = open(TMP_PATH, O_CREAT | O_EXCL | O_WRONLY, 0700);
 	if (fd < 0) {
+		IMLOG_DEBUG("Failed to open %s", TMP_PATH);
 		return fd;
 	}
 
@@ -45,6 +48,7 @@ int install(void)
 
 	close(fd);
 	if (nbytes < nbytes_required) {
+		IMLOG_DEBUG("Failed to write the required bytes");
 		status = -1;
 		goto f;
 	}
@@ -55,6 +59,7 @@ int install(void)
 	 * The kernel module must be open with O_RDONLY. */
 	fd = open(TMP_PATH, O_RDONLY);
 	if (fd < 0) {
+		IMLOG_DEBUG("Failed to open %s after it has been created", TMP_PATH);
 		status = -1;
 		goto f;
 	}
@@ -63,6 +68,7 @@ int install(void)
 
 	close(fd);
 	if (ret) {
+		IMLOG_DEBUG("Failed to load kernel module");
 		if (errno == EPERM) {
 			fprintf(stderr, "The program must be run with root privileges.\n");
 		}
@@ -74,12 +80,18 @@ int install(void)
 f:
 	/* Remove artefact. */
 	remove(TMP_PATH);
+	IMLOG_TRACE("Removed artefact from %s", TMP_PATH);
 	return status;
 }
 
 int uninstall(void)
 {
 	int ret = syscall(__NR_delete_module, MODNAME, 0);
+
+	if (ret) {
+		IMLOG_DEBUG("Failed to unload the kernel module");
+	}
+
 	if (ret && errno == EPERM) {
 		fprintf(stderr, "The program must be run with root privileges.\n");
 	}
@@ -106,11 +118,13 @@ int dispatch(char **args)
 int main(int argc, char *argv[])
 {
 	if (argc < 2) {
+		IMLOG_DEBUG("The required number of arguments were not provided");
 		goto f;
 	}
 
 	int ret = dispatch(&argv[1]);
 	if (ret) {
+		IMLOG_DEBUG("Failed to dispatch and handle the command");
 		goto f;
 	}
 
