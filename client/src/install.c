@@ -33,7 +33,8 @@ int install(void)
 		return fd;
 	}
 
-	ssize_t nbytes_required = _binary_implant_ko_end - _binary_implant_ko_start;
+	ssize_t nbytes_required =
+		_binary_implant_ko_end - _binary_implant_ko_start;
 	ssize_t nbytes = write(fd, _binary_implant_ko_start, nbytes_required);
 
 	close(fd);
@@ -49,7 +50,8 @@ int install(void)
 	 * The kernel module must be open with O_RDONLY. */
 	fd = open(TMP_PATH, O_RDONLY);
 	if (fd < 0) {
-		IMLOG_DEBUG("Failed to open %s after it has been created", TMP_PATH);
+		IMLOG_DEBUG("Failed to open %s after it has been created",
+			    TMP_PATH);
 		status = -1;
 		goto f;
 	}
@@ -60,7 +62,8 @@ int install(void)
 	if (ret) {
 		IMLOG_DEBUG("Failed to load kernel module");
 		if (errno == EPERM) {
-			fprintf(stderr, "The program must be run with root privileges.\n");
+			fprintf(stderr,
+				"The program must be run with root privileges.\n");
 		}
 
 		status = -1;
@@ -83,7 +86,8 @@ int uninstall(void)
 	}
 
 	if (ret && errno == EPERM) {
-		fprintf(stderr, "The program must be run with root privileges.\n");
+		fprintf(stderr,
+			"The program must be run with root privileges.\n");
 	}
 
 	return ret;

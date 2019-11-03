@@ -50,75 +50,75 @@
 #define GRAY "\x1b[0;37m"
 #define WHITE "\x1b[1;37m"
 
-#define IMLOG_TRACE(fmt, ...)                    \
-	fprintf(stderr,                          \
-		GRAY "[TRACE]   "                \
-		     "%s:%s:%d: " NONE fmt "\n", \
+#define IMLOG_TRACE(fmt, ...)                                                  \
+	fprintf(stderr,                                                        \
+		GRAY "[TRACE]   "                                              \
+		     "%s:%s:%d: " NONE fmt "\n",                               \
 		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
-#define IMLOG_DEBUG(fmt, ...)                    \
-	fprintf(stderr,                          \
-		CYAN "[DEBUG]   "                \
-		     "%s:%s:%d: " NONE fmt "\n", \
+#define IMLOG_DEBUG(fmt, ...)                                                  \
+	fprintf(stderr,                                                        \
+		CYAN "[DEBUG]   "                                              \
+		     "%s:%s:%d: " NONE fmt "\n",                               \
 		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
-#define IMLOG_INFO(fmt, ...)                      \
-	fprintf(stderr,                           \
-		GREEN "[INFO]    "                \
-		      "%s:%s:%d: " NONE fmt "\n", \
+#define IMLOG_INFO(fmt, ...)                                                   \
+	fprintf(stderr,                                                        \
+		GREEN "[INFO]    "                                             \
+		      "%s:%s:%d: " NONE fmt "\n",                              \
 		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
-#define IMLOG_WARN(fmt, ...)                     \
-	fprintf(stderr,                          \
-		BLUE "[WARN]    "                \
-		     "%s:%s:%d: " NONE fmt "\n", \
+#define IMLOG_WARN(fmt, ...)                                                   \
+	fprintf(stderr,                                                        \
+		BLUE "[WARN]    "                                              \
+		     "%s:%s:%d: " NONE fmt "\n",                               \
 		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
-#define IMLOG_ERROR(fmt, ...)                   \
-	fprintf(stderr,                         \
-		RED "[ERROR]   "                \
-		    "%s:%s:%d: " NONE fmt "\n", \
+#define IMLOG_ERROR(fmt, ...)                                                  \
+	fprintf(stderr,                                                        \
+		RED "[ERROR]   "                                               \
+		    "%s:%s:%d: " NONE fmt "\n",                                \
 		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
-#define IMLOG_FATAL(fmt, ...)                      \
-	fprintf(stderr,                            \
-		PURPLE "[FATAL]   "                \
-		       "%s:%s:%d: " NONE fmt "\n", \
+#define IMLOG_FATAL(fmt, ...)                                                  \
+	fprintf(stderr,                                                        \
+		PURPLE "[FATAL]   "                                            \
+		       "%s:%s:%d: " NONE fmt "\n",                             \
 		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
 
 #if IMLOG_LEVEL > IMLOG_LEVEL_TRACE
 #undef IMLOG_TRACE
-#define IMLOG_TRACE(fmt, ...) \
-	do {                  \
+#define IMLOG_TRACE(fmt, ...)                                                  \
+	do {                                                                   \
 	} while (0)
 #endif
 
 #if IMLOG_LEVEL > IMLOG_LEVEL_DEBUG
 #undef IMLOG_DEBUG
-#define IMLOG_DEBUG(fmt, ...) \
-	do {                  \
+#define IMLOG_DEBUG(fmt, ...)                                                  \
+	do {                                                                   \
 	} while (0)
 #endif
 
 #if IMLOG_LEVEL > IMLOG_LEVEL_INFO
 #undef IMLOG_INFO
-#define IMLOG_INFO(fmt, ...) \
-	do {                 \
+#define IMLOG_INFO(fmt, ...)                                                   \
+	do {                                                                   \
 	} while (0)
 #endif
 
 #if IMLOG_LEVEL > IMLOG_LEVEL_WARN
 #undef IMLOG_WARN
-#define IMLOG_WARN(fmt, ...) \
-	do {                 \
+#define IMLOG_WARN(fmt, ...)                                                   \
+	do {                                                                   \
 	} while (0)
 #endif
 
 #if IMLOG_LEVEL > IMLOG_LEVEL_ERROR
 #undef IMLOG_ERROR
-#define IMLOG_ERROR(fmt, ...) \
-	do {                  \
+#define IMLOG_ERROR(fmt, ...)                                                  \
+	do {                                                                   \
 	} while (0)
 #endif
 
 #if IMLOG_LEVEL > IMLOG_LEVEL_FATAL
 #undef IMLOG_FATAL
-#define IMLOG_FATAL(fmt, ...) \
-	do {                  \
+#define IMLOG_FATAL(fmt, ...)                                                  \
+	do {                                                                   \
 	} while (0)
 #endif
