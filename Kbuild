@@ -10,6 +10,10 @@ ifneq ($(IMPLANT_CLASS_NAME),)
 ccflags-y += -DIMPLANT_CLASS_NAME=$(IMPLANT_CLASS_NAME)
 endif
 
+ifneq ($(IMLOG_LEVEL),)
+ccflags-y += -DIMLOG_LEVEL=$(IMLOG_LEVEL)
+endif
+
 obj-m := $(MODNAME).o
 
 # add c files

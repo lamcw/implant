@@ -1,5 +1,11 @@
 KDIR = /lib/modules/`uname -r`/build
 
+CCFLAGS += -Iclient/include
+
+ifneq ($(IMLOG_LEVEL),)
+CCFLAGS += -DIMLOG_LEVEL=$(IMLOG_LEVEL)
+endif
+
 # Builds the kernel module.
 kmodule:
 	make -C $(KDIR) M=`pwd`
@@ -10,7 +16,7 @@ implant.ko.o: kmodule
 
 # Builds the client application.
 sc-client: implant.ko.o client/src/*
-	$(CC) $(CFLAGS) $(CCFLAGS) -Iclient/include $^ -o $@
+	$(CC) $(CFLAGS) $(CCFLAGS) $^ -o $@
 
 # Compile the Linux kernel.
 #

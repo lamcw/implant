@@ -18,13 +18,15 @@
 #include <stdio.h>
 
 /* Available log levels. */
-#define IMLOG_LEVEL_TRACE 1
-#define IMLOG_LEVEL_DEBUG 2
-#define IMLOG_LEVEL_INFO 3
-#define IMLOG_LEVEL_WARN 4
-#define IMLOG_LEVEL_ERROR 5
-#define IMLOG_LEVEL_FATAL 6
-#define IMLOG_LEVEL_NONE 7
+#define IMLOG_LEVEL_EMERG 0
+#define IMLOG_LEVEL_ALERT 1
+#define IMLOG_LEVEL_CRIT 2
+#define IMLOG_LEVEL_ERR 3
+#define IMLOG_LEVEL_WARNING 4
+#define IMLOG_LEVEL_NOTICE 5
+#define IMLOG_LEVEL_INFO 6
+#define IMLOG_LEVEL_DEBUG 7
+#define IMLOG_LEVEL_NONE 8
 
 #ifndef IMLOG_LEVEL
 /* Logging is disabled by default. */
@@ -50,47 +52,78 @@
 #define GRAY "\x1b[0;37m"
 #define WHITE "\x1b[1;37m"
 
-#define IMLOG_TRACE(fmt, ...)                                                  \
-	fprintf(stderr,                                                        \
-		GRAY "[TRACE]   "                                              \
-		     "%s:%s:%d: " NONE fmt "\n",                               \
-		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
 #define IMLOG_DEBUG(fmt, ...)                                                  \
 	fprintf(stderr,                                                        \
-		CYAN "[DEBUG]   "                                              \
-		     "%s:%s:%d: " NONE fmt "\n",                               \
+		"[DEBUG]   "                                                   \
+		"%s:%s:%d: " fmt "\n",                                         \
 		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
 #define IMLOG_INFO(fmt, ...)                                                   \
 	fprintf(stderr,                                                        \
-		GREEN "[INFO]    "                                             \
-		      "%s:%s:%d: " NONE fmt "\n",                              \
-		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
-#define IMLOG_WARN(fmt, ...)                                                   \
-	fprintf(stderr,                                                        \
-		BLUE "[WARN]    "                                              \
+		GRAY "[INFO]   "                                               \
 		     "%s:%s:%d: " NONE fmt "\n",                               \
 		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
-#define IMLOG_ERROR(fmt, ...)                                                  \
+#define IMLOG_NOTICE(fmt, ...)                                                 \
 	fprintf(stderr,                                                        \
-		RED "[ERROR]   "                                               \
+		CYAN "[NOTICE]    "                                            \
+		     "%s:%s:%d: " NONE fmt "\n",                               \
+		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
+#define IMLOG_WARNING(fmt, ...)                                                \
+	fprintf(stderr,                                                        \
+		GREEN "[WARNING]    "                                          \
+		      "%s:%s:%d: " NONE fmt "\n",                              \
+		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
+#define IMLOG_ERR(fmt, ...)                                                    \
+	fprintf(stderr,                                                        \
+		BLUE "[ERR]   "                                                \
+		     "%s:%s:%d: " NONE fmt "\n",                               \
+		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
+#define IMLOG_CRIT(fmt, ...)                                                   \
+	fprintf(stderr,                                                        \
+		RED "[CRIT]   "                                                \
 		    "%s:%s:%d: " NONE fmt "\n",                                \
 		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
-#define IMLOG_FATAL(fmt, ...)                                                  \
+#define IMLOG_ALERT(fmt, ...)                                                  \
 	fprintf(stderr,                                                        \
-		PURPLE "[FATAL]   "                                            \
+		PURPLE "[ALERT]   "                                            \
+		       "%s:%s:%d: " NONE fmt "\n",                             \
+		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
+#define IMLOG_EMERG(fmt, ...)                                                  \
+	fprintf(stderr,                                                        \
+		YELLOW "[ALERT]   "                                            \
 		       "%s:%s:%d: " NONE fmt "\n",                             \
 		__func__, __FILE__, __LINE__, ##__VA_ARGS__);
 
-#if IMLOG_LEVEL > IMLOG_LEVEL_TRACE
-#undef IMLOG_TRACE
-#define IMLOG_TRACE(fmt, ...)                                                  \
+#if IMLOG_LEVEL > IMLOG_LEVEL_ALERT
+#undef IMLOG_ALERT
+#define IMLOG_ALERT(fmt, ...)                                                  \
 	do {                                                                   \
 	} while (0)
 #endif
 
-#if IMLOG_LEVEL > IMLOG_LEVEL_DEBUG
-#undef IMLOG_DEBUG
-#define IMLOG_DEBUG(fmt, ...)                                                  \
+#if IMLOG_LEVEL > IMLOG_LEVEL_CRIT
+#undef IMLOG_CRIT
+#define IMLOG_CRIT(fmt, ...)                                                   \
+	do {                                                                   \
+	} while (0)
+#endif
+
+#if IMLOG_LEVEL > IMLOG_LEVEL_ERR
+#undef IMLOG_ERR
+#define IMLOG_ERR(fmt, ...)                                                    \
+	do {                                                                   \
+	} while (0)
+#endif
+
+#if IMLOG_LEVEL > IMLOG_LEVEL_WARNING
+#undef IMLOG_WARNING
+#define IMLOG_WARNING(fmt, ...)                                                \
+	do {                                                                   \
+	} while (0)
+#endif
+
+#if IMLOG_LEVEL > IMLOG_LEVEL_NOTICE
+#undef IMLOG_NOTICE
+#define IMLOG_NOTICE(fmt, ...)                                                 \
 	do {                                                                   \
 	} while (0)
 #endif
@@ -102,23 +135,9 @@
 	} while (0)
 #endif
 
-#if IMLOG_LEVEL > IMLOG_LEVEL_WARN
-#undef IMLOG_WARN
-#define IMLOG_WARN(fmt, ...)                                                   \
-	do {                                                                   \
-	} while (0)
-#endif
-
-#if IMLOG_LEVEL > IMLOG_LEVEL_ERROR
-#undef IMLOG_ERROR
-#define IMLOG_ERROR(fmt, ...)                                                  \
-	do {                                                                   \
-	} while (0)
-#endif
-
-#if IMLOG_LEVEL > IMLOG_LEVEL_FATAL
-#undef IMLOG_FATAL
-#define IMLOG_FATAL(fmt, ...)                                                  \
+#if IMLOG_LEVEL > IMLOG_LEVEL_DEBUG
+#undef IMLOG_DEBUG
+#define IMLOG_DEBUG(fmt, ...)                                                  \
 	do {                                                                   \
 	} while (0)
 #endif

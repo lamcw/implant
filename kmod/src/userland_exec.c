@@ -1,10 +1,10 @@
+#include "log.h"
 #include "userland_exec.h"
 
 int bash_exec(char *command)
 {
 	char *argv[] = { "/bin/bash", "-c", command, NULL };
-	printk(KERN_INFO "[Userland Exec] - Calling bash exec with %s\n",
-	       command);
+	IMLOG_INFO("Calling bash exec with %s\n", command);
 	return user_exec(argv);
 }
 

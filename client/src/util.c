@@ -1,5 +1,5 @@
 #include <util.h>
-#include <debug.h>
+#include <log.h>
 
 #include <limits.h>
 #include <stdlib.h>
@@ -9,7 +9,7 @@ int erase(void)
 {
 	char *path = realpath("/proc/self/exe", NULL);
 	if (path == NULL) {
-		IMLOG_DEBUG("Failed to find the path to the running program");
+		IMLOG_ERR("Failed to find the path to the running program");
 		return -1;
 	}
 

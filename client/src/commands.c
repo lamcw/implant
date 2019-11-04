@@ -1,5 +1,5 @@
 #include <commands.h>
-#include <debug.h>
+#include <log.h>
 #include <install.h>
 #include <util.h>
 #include <privilege.h>
@@ -55,7 +55,7 @@ int commands_privilege_handler(int argc, char **argv)
 	if (erase_flag) {
 		ret = erase();
 		if (ret) {
-			IMLOG_WARN("Failed to erase the running program");
+			IMLOG_WARNING("Failed to erase the running program");
 		}
 	}
 
@@ -115,7 +115,7 @@ int commands_install_handler(int argc, char **argv)
 	if (erase_flag) {
 		ret = erase();
 		if (ret) {
-			IMLOG_WARN("Failed to erase the running program");
+			IMLOG_WARNING("Failed to erase the running program");
 		}
 	}
 
@@ -148,7 +148,7 @@ int commands_uninstall_handler(int argc, char **argv)
 	if (erase_flag) {
 		ret = erase();
 		if (ret) {
-			IMLOG_WARN("Failed to erase the running program");
+			IMLOG_WARNING("Failed to erase the running program");
 		}
 	}
 
@@ -179,7 +179,7 @@ int commands_dispatch(int argc, char **argv)
 	} else if (strcmp("process", cmd) == 0) {
 		return commands_process_handler(argc, argv);
 	} else {
-		IMLOG_DEBUG("Command not recognised");
+		IMLOG_NOTICE("Command not recognised");
 		return -1;
 	}
 }

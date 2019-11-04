@@ -1,4 +1,4 @@
-#include <debug.h>
+#include <log.h>
 #include <commands.h>
 
 #include <stdio.h>

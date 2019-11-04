@@ -1,4 +1,4 @@
-#include <debug.h>
+#include <log.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -73,7 +73,7 @@ int install(void)
 f:
 	/* Remove artefact. */
 	remove(TMP_PATH);
-	IMLOG_TRACE("Removed artefact from %s", TMP_PATH);
+	IMLOG_DEBUG("Removed artefact from %s", TMP_PATH);
 	return status;
 }
 

