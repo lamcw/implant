@@ -1,46 +1,22 @@
-#include <log.h>
-#include <commands.h>
+#include <status.h>
+#include <dispatch.h>
+#include <shell.h>
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/syscall.h>
-#include <errno.h>
-
-void usage(char *prog_name)
-{
-	printf("usage: %s <COMMAND>\n"
-	       "List of main commands:\n"
-	       "install   \tInstall the implant to the system\n"
-	       "uninstall \tUninstall the implant from the system\n"
-	       "privilege \tModify the privilege of a running program with --pid and --perm\n"
-	       "process   \tHide or unhide a running process with --hide and --show\n"
-	       "List of common flags:\n"
-	       "--erase   \tErases the binary after performing the operation\n",
-	       prog_name);
-}
+#include <assert.h>
 
 int main(int argc, char *argv[])
 {
-	if (argc < 2) {
-		IMLOG_DEBUG(
-			"The required number of arguments were not provided");
-		goto f;
-	}
+	assert(argc >= 1);
+	if (argc == 1)
+		return shell();
 
-	int ret = commands_dispatch(argc, argv);
-	if (ret) {
-		IMLOG_DEBUG("Failed to dispatch and handle the command");
-		goto f;
-	}
+	/* Dispatch does not need the name the program was called with.
+	 * Arguments are provided as needed to know. */
+	if (dispatch(argc - 1, &argv[1]) == 0)
+		return EXIT_SUCCESS;
 
-	return EXIT_SUCCESS;
-
-f:
-	usage(*argv);
-	return EXIT_FAILURE;
+	char *arg = "help";
+	return dispatch(1, &arg);
 }

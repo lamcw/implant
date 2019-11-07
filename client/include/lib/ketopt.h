@@ -140,4 +140,4 @@ static int ketopt(ketopt_t *s, int argc, char *argv[], int permute,
 	return opt;
 }
 
-#endif
+#endif /* KETOPT_H */
