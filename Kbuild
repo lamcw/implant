@@ -16,14 +16,7 @@ endif
 
 obj-m := $(MODNAME).o
 
-# add c files
-SRCS += kmod/src/implant.c
-SRCS += kmod/src/privilege_escalation.c
-SRCS += kmod/src/hide_proc.c
-SRCS += kmod/src/commands.c
-SRCS += kmod/src/ketopt.c
-SRCS += kmod/src/userland_exec.c
-
-OBJS := $(SRCS:.c=.o)
+SRCS := $(wildcard $(src)/kmod/src/*.c) $(wildcard $(src)/kmod/src/*/*.c)
+OBJS := $(patsubst $(src)/kmod/src/%.c,kmod/src/%.o,$(SRCS))
 
 $(MODNAME)-y := $(OBJS)

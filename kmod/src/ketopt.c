@@ -1,4 +1,4 @@
-#include "ketopt.h"
+#include "lib/ketopt.h"
 
 static void ketopt_permute(char *argv[], int j,
 			   int n) /* move argv[j] over n elements to the left */
@@ -11,7 +11,7 @@ static void ketopt_permute(char *argv[], int j,
 }
 
 /**
- * Parse command-line options and arguments
+ * ketopt() - Parse command-line options and arguments.
  *
  * This fuction has a similar interface to GNU's getopt_long(). Each call
  * parses one option and returns the option name.  s->arg points to the option
@@ -19,14 +19,14 @@ static void ketopt_permute(char *argv[], int j,
  * are parsed. In this case, s->ind is the index of the first non-option
  * argument.
  *
- * @param s         status; shall be initialized to KETOPT_INIT on the first call
- * @param argc      length of argv[]
- * @param argv      list of command-line arguments; argv[0] is ignored
- * @param permute   non-zero to move options ahead of non-option arguments
- * @param ostr      option string
- * @param longopts  long options
+ * @s: status; shall be initialized to KETOPT_INIT on the first call.
+ * @argc: length of argv[].
+ * @argv: list of command-line arguments; argv[0] is ignored.
+ * @permute: non-zero to move options ahead of non-option arguments.
+ * @ostr: option string.
+ * @longopts: long options.
  *
- * @return ASCII for a short option; ko_longopt_t::val for a long option; -1 if
+ * Return: ASCII for a short option; ko_longopt_t::val for a long option; -1 if
  *         argv[] is fully processed; '?' for an unknown option or an ambiguous
  *         long option; ':' if an option argument is missing
  */

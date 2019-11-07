@@ -13,7 +13,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#ifndef _LOG_H
+#define _LOG_H
 
 #include <linux/kernel.h>
 #include <linux/module.h>
@@ -114,3 +115,5 @@
 	do {                                                                   \
 	} while (0)
 #endif
+
+#endif /* _LOG_H */

@@ -1,5 +1,5 @@
-#ifndef KETOPT_H
-#define KETOPT_H
+#ifndef _KETOPT_H
+#define _KETOPT_H
 
 #include <linux/string.h> /* for strchr() and strncmp() */
 
@@ -8,11 +8,23 @@
 #define ko_optional_argument 2
 
 typedef struct {
-	int ind; /* equivalent to optind */
+	/**
+	 * @ind: Equivalent to optind.
+	 */
+	int ind;
+	/**
+	 * @opt: Equivalent to optopt.
+	 */
 	int opt; /* equivalent to optopt */
-	char *arg; /* equivalent to optarg */
-	int longidx; /* index of a long option; or -1 if short */
-	/* private variables not intended for external uses */
+	/**
+	 * @arg: Equivalent to optarg.
+	 */
+	char *arg;
+	/**
+	 * @longidx: index of a long option; or -1 if short
+	 */
+	int longidx;
+	/* private: internal use only */
 	int i, pos, n_args;
 } ketopt_t;
 
@@ -30,4 +42,4 @@ const static ketopt_t KETOPT_INIT_ZERO = {
 int ketopt(ketopt_t *s, int argc, char *argv[], int permute, const char *ostr,
 	   const ko_longopt_t *longopts);
 
-#endif
+#endif /* _KETOPT_H */

