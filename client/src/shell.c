@@ -75,6 +75,10 @@ int shell(void)
 		int ret = getline(&command, &tmp, stdin);
 		if (ret < 0) {
 			error("Failed to read command.\n");
+			/* getline() always allocates a buffer for storing the
+			 * line, even if getline() failed. This is documented
+			 * behavior. */
+			free(command);
 			return -errno;
 		}
 
@@ -96,6 +100,8 @@ int shell(void)
 
 		/* Catch quit command before dispatch. */
 		if (strcmp("quit", argv[0]) == 0) {
+			for (int i = 0; i < argc; i++)
+				free(argv[i]);
 			free(argv);
 			free(command);
 			break;
