@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-enum { opt_set_pid, opt_set_uid, opt_set_gid };
+enum { opt_set_uid, opt_set_gid };
 
 static const ko_longopt_t set_longopts[] = {
 	{ "uid", ko_required_argument, opt_set_uid },

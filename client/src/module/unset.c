@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-enum { opt_unset_pid, opt_unset_uid, opt_unset_gid };
+enum { opt_unset_uid, opt_unset_gid };
 
 static const ko_longopt_t unset_longopts[] = {
 	{ "uid", ko_no_argument, opt_unset_uid },
