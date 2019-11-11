@@ -20,3 +20,10 @@ client:
   script:
     - apt install build-essential dkms linux-headers-${LINUX_HEADER_VERSION}-amd64 -y
     - make KDIR=/lib/modules/${LINUX_HEADER_VERSION}-amd64/build sc-client
+
+format:
+  stage: build
+  script:
+    - apt install build-essential clang-format git -y
+    - make format
+    - (! git status | grep modified:)
