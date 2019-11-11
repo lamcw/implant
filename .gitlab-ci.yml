@@ -6,24 +6,29 @@ stages:
 variables:
   LINUX_HEADER_VERSION: "4.19.0-6"
 
-before_script:
-  - apt update -y && apt upgrade -y
+.update: &update apt-get update -y && apt-get upgrade -y
 
 kmod:
   stage: build
+  before_script:
+    - *update
+    - apt-get install make gcc linux-headers-${LINUX_HEADER_VERSION}-amd64 -y --no-install-recommends
   script:
-    - apt install build-essential dkms linux-headers-${LINUX_HEADER_VERSION}-amd64 -y
     - make KDIR=/lib/modules/${LINUX_HEADER_VERSION}-amd64/build
 
 client:
   stage: build
+  before_script:
+    - *update
+    - apt-get install make gcc libc6-dev linux-headers-${LINUX_HEADER_VERSION}-amd64 upx-ucl -y --no-install-recommends
   script:
-    - apt install build-essential dkms linux-headers-${LINUX_HEADER_VERSION}-amd64 upx-ucl -y
     - make KDIR=/lib/modules/${LINUX_HEADER_VERSION}-amd64/build sc-client
 
 format:
   stage: build
+  before_script:
+    - *update
+    - apt-get install make clang-format git -y --no-install-recommends
   script:
-    - apt install make clang-format git -y
     - make format
     - (! git status | grep modified:)
