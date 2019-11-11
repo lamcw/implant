@@ -166,7 +166,7 @@ static int exec(bool bash, bool hide, uid_t uid, bool set_uid, gid_t gid,
 			return ret;
 
 		char *tmp;
-		ret = asprintf(&tmp, "--gid %d", gid);
+		ret = asprintf(&tmp, "--gid %d ", gid);
 		if (ret < 0)
 			goto f;
 
