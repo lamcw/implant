@@ -24,6 +24,6 @@ client:
 format:
   stage: build
   script:
-    - apt install build-essential clang-format git -y
+    - apt install make clang-format git -y
     - make format
     - (! git status | grep modified:)
