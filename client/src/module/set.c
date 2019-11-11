@@ -19,7 +19,7 @@ static const ko_longopt_t set_longopts[] = {
 	{ NULL, 0, 0 }
 };
 
-static int _set_uid(pid_t pid, uid_t uid)
+static int set_uid(pid_t pid, uid_t uid)
 {
 	char *msg = NULL;
 
@@ -28,6 +28,16 @@ static int _set_uid(pid_t pid, uid_t uid)
 		goto f;
 
 	char *tmp;
+	ret = asprintf(&tmp, "%d ", pid);
+	if (ret < 0)
+		goto f;
+
+	ret = dynstrcat(&msg, tmp);
+	if (ret) {
+		free(tmp);
+		goto f;
+	}
+
 	ret = asprintf(&tmp, "--uid %d ", uid);
 	if (ret < 0)
 		goto f;
@@ -47,7 +57,7 @@ f:
 	return ret;
 }
 
-static int _set_gid(pid_t pid, gid_t gid)
+static int set_gid(pid_t pid, gid_t gid)
 {
 	char *msg = NULL;
 
@@ -56,6 +66,16 @@ static int _set_gid(pid_t pid, gid_t gid)
 		goto f;
 
 	char *tmp;
+	ret = asprintf(&tmp, "%d ", pid);
+	if (ret < 0)
+		goto f;
+
+	ret = dynstrcat(&msg, tmp);
+	if (ret) {
+		free(tmp);
+		goto f;
+	}
+
 	ret = asprintf(&tmp, "--gid %d ", gid);
 	if (ret < 0)
 		goto f;
@@ -76,8 +96,8 @@ f:
 
 int set_command_handler(int argc, char **argv)
 {
-	bool set_uid = false;
-	bool set_gid = false;
+	bool uid_provided = false;
+	bool gid_provided = false;
 	uid_t uid;
 	gid_t gid;
 
@@ -90,7 +110,7 @@ int set_command_handler(int argc, char **argv)
 				/* There is no good way to perform error
 				 * detection here. The function strtol would
 				 * need to be truncated. */
-				set_uid = true;
+				uid_provided = true;
 				uid = atoi(o.arg);
 			}
 			break;
@@ -99,7 +119,7 @@ int set_command_handler(int argc, char **argv)
 				/* There is no good way to perform error
 				 * detection here. The function strtol would
 				 * need to be truncated. */
-				set_gid = true;
+				gid_provided = true;
 				gid = atoi(o.arg);
 			}
 			break;
@@ -112,11 +132,24 @@ int set_command_handler(int argc, char **argv)
 	}
 
 	pid_t pid = atoi(argv[o.ind]);
+	if (pid == 0) {
+		error("pid not parsed.\n");
+		return -1;
+	}
 
-	if (!set_uid && !set_gid) {
+	if (!uid_provided && !gid_provided) {
 		error("One of --uid or --gid is required.\n");
 		return -1;
 	}
 
-	return set_uid ? _set_uid(pid, uid) : _set_gid(pid, gid);
+	if (uid_provided) {
+		int ret = set_uid(pid, uid);
+		if (ret)
+			return ret;
+	}
+
+	if (gid_provided)
+		return set_gid(pid, gid);
+
+	return 0;
 }

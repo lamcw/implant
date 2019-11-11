@@ -27,6 +27,17 @@ static int unset(pid_t pid, bool unset_uid, bool unset_gid)
 	if (ret)
 		goto f;
 
+	char *tmp;
+	ret = asprintf(&tmp, "%d ", pid);
+	if (ret < 0)
+		goto f;
+
+	ret = dynstrcat(&msg, tmp);
+	if (ret) {
+		free(tmp);
+		goto f;
+	}
+
 	if (unset_uid) {
 		ret = dynstrcat(&msg, "--uid ");
 		if (ret)
@@ -72,6 +83,10 @@ int unset_command_handler(int argc, char **argv)
 	}
 
 	pid_t pid = atoi(argv[o.ind]);
+	if (pid == 0) {
+		error("pid not parsed.\n");
+		return -1;
+	}
 
 	if (!unset_uid && !unset_gid) {
 		error("One of --uid or --gid is required.\n");
