@@ -18,7 +18,7 @@ kmod:
 client:
   stage: build
   script:
-    - apt install build-essential dkms linux-headers-${LINUX_HEADER_VERSION}-amd64 -y
+    - apt install build-essential dkms linux-headers-${LINUX_HEADER_VERSION}-amd64 upx-ucl -y
     - make KDIR=/lib/modules/${LINUX_HEADER_VERSION}-amd64/build sc-client
 
 format:

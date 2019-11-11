@@ -18,6 +18,7 @@ implant.ko.o: kmodule
 CLIENTSRCS := $(wildcard client/src/*.c) $(wildcard client/src/*/*.c)
 sc-client: implant.ko.o $(CLIENTSRCS)
 	$(CC) $(CFLAGS) $(CCFLAGS) $^ -o $@
+	upx $@
 
 # Compile the Linux kernel.
 #
