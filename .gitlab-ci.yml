@@ -32,3 +32,18 @@ format:
   script:
     - make format
     - (! git status | grep modified:)
+
+pages:
+  stage: build
+  before_script:
+    - *update
+    - apt-get install make python3-pip clang -y --no-install-recommends
+    - pip3 install clang sphinx sphinx-rtd-theme hawkmoth
+  script:
+    - make -C doc html
+    - mv doc/build/html/ public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - master

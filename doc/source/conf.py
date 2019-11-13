@@ -17,13 +17,6 @@
 import os
 cautodoc_root = os.path.abspath('../..')
 cautodoc_clang = '-I' + os.path.abspath('../../client/include') + ','
-# For some reason the Python 3 clang bindings, at least on Fedora, don't
-# result in Clang using its own library headers. This will result in missing
-# headers. Its also unclear to me how to get the version through the bindings.
-# For the time being, hard-coding this include path is required.
-#
-# TODO: Fix.
-cautodoc_clang += '-I' + os.path.abspath('/usr/lib64/clang/9.0.0/include') + ','
 
 # -- Project information -----------------------------------------------------
 
