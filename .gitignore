@@ -72,3 +72,6 @@ usr/
 
 ### sc-client artefacts ###
 sc-client
+
+### sphinx artefacts ###
+doc/build
