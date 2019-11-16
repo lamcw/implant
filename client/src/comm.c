@@ -19,7 +19,7 @@ int comm(const char *msg, size_t len)
 	}
 
 	int ret = write(fd, msg, len);
-	if (ret != len) {
+	if (ret < 0 || (size_t)ret != len) {
 		error("Communication with the implant was interrupted.\n");
 		if (ret >= 0)
 			ret = -1;

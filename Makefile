@@ -1,6 +1,6 @@
 KDIR = /lib/modules/`uname -r`/build
 
-CCFLAGS += -Iclient/include
+CCFLAGS += -Wall -Wextra -Werror -Iclient/include
 
 ifneq ($(IMLOG_LEVEL),)
 CCFLAGS += -DIMLOG_LEVEL=$(IMLOG_LEVEL)

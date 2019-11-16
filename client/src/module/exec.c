@@ -34,7 +34,7 @@ static char *strjoin(char **str, size_t n, char *delim)
 	/* Include space for NULL terminator. */
 	size_t len = 1;
 
-	for (int i = 0; i < n; i++) {
+	for (size_t i = 0; i < n; i++) {
 		len += strlen(str[i]);
 		if (i != n - 1)
 			len += strlen(delim);
@@ -47,7 +47,7 @@ static char *strjoin(char **str, size_t n, char *delim)
 	/* For strcat to work there must be an existing NULL terminator. */
 	*s = '\0';
 
-	for (int i = 0; i < n; i++) {
+	for (size_t i = 0; i < n; i++) {
 		strcat(s, str[i]);
 		if (i != n - 1)
 			strcat(s, delim);

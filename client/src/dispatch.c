@@ -1,7 +1,6 @@
 #include <dispatch.h>
 #include <log.h>
 #include <status.h>
-#include <lib/ketopt.h>
 
 #include <module/infect.h>
 #include <module/disinfect.h>
@@ -13,6 +12,7 @@
 #include <module/unset.h>
 #include <module/help.h>
 
+#include <string.h>
 #include <assert.h>
 
 int dispatch(int argc, char **argv)
