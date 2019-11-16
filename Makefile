@@ -1,6 +1,6 @@
 KDIR = /lib/modules/`uname -r`/build
 
-CCFLAGS += -Wall -Wextra -Werror -Iclient/include
+CCFLAGS += -Wall -Wextra -Werror -ldl -export-dynamic -Iclient/include -Iclient/payloads
 
 ifneq ($(IMLOG_LEVEL),)
 CCFLAGS += -DIMLOG_LEVEL=$(IMLOG_LEVEL)
@@ -14,13 +14,15 @@ endif
 kmodule:
 	make -C $(KDIR) M=`pwd`
 
+include client/payloads/Makefile
+
 # Builds an object file for the kernel module that can be embedded.
 implant.ko.o: kmodule
 	ld -r -b binary implant.ko -o $@
 
 # Builds the client application.
 CLIENTSRCS := $(wildcard client/src/*.c) $(wildcard client/src/*/*.c)
-sc-client: implant.ko.o $(CLIENTSRCS)
+sc-client: implant.ko.o $(CLIENTSRCS) $(TARGETSRCS) $(TARGETOBJS)
 	$(CC) $(CFLAGS) $(CCFLAGS) $^ -o $@
 	upx $@
 
@@ -49,7 +51,7 @@ ksource:
 		make ARCH=x86_64 defconfig; # Use the default configuration.
 	rm -rf control.tar.gz data.tar.gz debian-binary linux-source-4.19_4.19.67-2+deb10u1_all.deb
 
-clean:
+clean: payloads_clean
 	make -C $(KDIR) M=`pwd` clean; \
 		rm -rf sc-client;
 

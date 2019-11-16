@@ -14,6 +14,7 @@ enum { help_module_infect,
        help_module_unhide,
        help_module_set,
        help_module_unset,
+       help_module_payloads,
        help_module_help,
        help_module_done };
 
@@ -26,6 +27,7 @@ const char *const help[] = {
 	"unhide [--pid <pid> | --file <path>] | --module",
 	"set <pid> [--uid <uid>] [--gid <gid>]",
 	"unset <pid> [--uid] [--gid]",
+	"payload [--list | --exec <name>]",
 	"help <module>"
 };
 
@@ -57,6 +59,8 @@ int help_command_handler(int argc, char **argv)
 			puts(help[help_module_set]);
 		else if (strcmp(module, "unset") == 0)
 			puts(help[help_module_unset]);
+		else if (strcmp(module, "payload") == 0)
+			puts(help[help_module_payloads]);
 		else if (strcmp(module, "help") == 0)
 			puts(help[help_module_help]);
 		else

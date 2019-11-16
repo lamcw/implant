@@ -11,6 +11,7 @@
 #include <module/set.h>
 #include <module/unset.h>
 #include <module/help.h>
+#include <module/payload.h>
 
 #include <string.h>
 #include <assert.h>
@@ -40,6 +41,8 @@ int dispatch(int argc, char **argv)
 		handler = &set_command_handler;
 	else if (strcmp("unset", command) == 0)
 		handler = &unset_command_handler;
+	else if (strcmp("payload", command) == 0)
+		handler = &payload_command_handler;
 	else if (strcmp("help", command) == 0)
 		handler = &help_command_handler;
 

