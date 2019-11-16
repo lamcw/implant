@@ -1,8 +1,8 @@
 #include <dispatch.h>
 #include <lib/extract.h>
 
-extern char _binary_client_payloads_merlin_merlinClient_start[];
-extern char _binary_client_payloads_merlin_merlinClient_end[];
+extern char _binary_client_payload_merlin_merlinClient_start[];
+extern char _binary_client_payload_merlin_merlinClient_end[];
 
 #ifndef MERLIN_EXTRACT_PATH
 #define MERLIN_EXTRACT_PATH "/tmp/merlin"
@@ -12,10 +12,10 @@ int extract_merlin()
 {
 	ssize_t bytes_to_write, nbytes;
 
-	bytes_to_write = _binary_client_payloads_merlin_merlinClient_end -
-			 _binary_client_payloads_merlin_merlinClient_start;
+	bytes_to_write = _binary_client_payload_merlin_merlinClient_end -
+			 _binary_client_payload_merlin_merlinClient_start;
 	nbytes = extract(MERLIN_EXTRACT_PATH,
-			 _binary_client_payloads_merlin_merlinClient_start,
+			 _binary_client_payload_merlin_merlinClient_start,
 			 bytes_to_write);
 
 	if (nbytes < bytes_to_write) {

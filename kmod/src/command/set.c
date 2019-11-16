@@ -1,7 +1,7 @@
 #include <linux/kernel.h>
 #include <linux/uidgid.h>
 
-#include "commands/set.h"
+#include "command/set.h"
 #include "lib/ketopt.h"
 #include "log.h"
 #include "proc_uidgid.h"

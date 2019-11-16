@@ -1,6 +1,6 @@
 #include <asm-generic/errno-base.h>
 
-#include "commands/unhide.h"
+#include "command/unhide.h"
 #include "lib/ketopt.h"
 #include "proc_hide.h"
 #include "module_hide.h"

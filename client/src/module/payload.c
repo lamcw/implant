@@ -3,7 +3,7 @@
 #include <module/payload.h>
 #include <lib/ketopt.h>
 #include <lib/dynstr.h>
-#include <payloads.h>
+#include <payload.h>
 
 #include <stdbool.h>
 

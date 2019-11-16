@@ -4,7 +4,7 @@
 #include <asm-generic/errno-base.h>
 #include <stdbool.h>
 
-#include "commands/exec.h"
+#include "command/exec.h"
 #include "lib/ketopt.h"
 #include "userland_exec.h"
 #include "proc_hide.h"

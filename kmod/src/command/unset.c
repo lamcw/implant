@@ -3,7 +3,7 @@
 #include <asm-generic/errno-base.h>
 #include <stdbool.h>
 
-#include "commands/unset.h"
+#include "command/unset.h"
 #include "lib/ketopt.h"
 #include "log.h"
 #include "proc_uidgid.h"

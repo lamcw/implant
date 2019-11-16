@@ -1,6 +1,6 @@
 KDIR = /lib/modules/`uname -r`/build
 
-CCFLAGS += -Wall -Wextra -Werror -ldl -export-dynamic -Iclient/include -Iclient/payloads
+CCFLAGS += -Wall -Wextra -Werror -ldl -export-dynamic -Iclient/include -Iclient/payload
 
 ifneq ($(IMLOG_LEVEL),)
 CCFLAGS += -DIMLOG_LEVEL=$(IMLOG_LEVEL)
@@ -14,7 +14,7 @@ endif
 kmodule:
 	make -C $(KDIR) M=`pwd`
 
-include client/payloads/Makefile
+include client/payload/Makefile
 
 # Builds an object file for the kernel module that can be embedded.
 implant.ko.o: kmodule

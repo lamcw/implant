@@ -1,4 +1,4 @@
-#include "commands/ls.h"
+#include "command/ls.h"
 
 int ls_handler(int argc, char **argv)
 {

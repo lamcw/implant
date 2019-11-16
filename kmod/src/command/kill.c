@@ -1,7 +1,7 @@
 #include <linux/kernel.h>
 
 #include "log.h"
-#include "commands/kill.h"
+#include "command/kill.h"
 #include "proc_kill.h"
 
 int kill_handler(int argc, char **argv)

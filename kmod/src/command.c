@@ -1,13 +1,13 @@
 #include "log.h"
-#include "commands.h"
-#include "commands/exec.h"
-#include "commands/kill.h"
-#include "commands/hide.h"
-#include "commands/unhide.h"
-#include "commands/ps.h"
-#include "commands/ls.h"
-#include "commands/set.h"
-#include "commands/unset.h"
+#include "command.h"
+#include "command/exec.h"
+#include "command/kill.h"
+#include "command/hide.h"
+#include "command/unhide.h"
+#include "command/ps.h"
+#include "command/ls.h"
+#include "command/set.h"
+#include "command/unset.h"
 
 int commands_dispatch(int argc, char **argv)
 {

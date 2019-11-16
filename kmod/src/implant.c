@@ -6,7 +6,7 @@
 #include <linux/uaccess.h>
 #include <linux/string.h>
 
-#include "commands.h"
+#include "command.h"
 #include "log.h"
 #include "proc_hide.h"
 
