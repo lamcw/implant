@@ -12,7 +12,7 @@ int comm(const char *msg, size_t len)
 	assert(msg != NULL);
 	assert(len > 0);
 
-	int fd = open("/dev/" IMPLANT_DEVICE_NAME, O_WRONLY);
+	int fd = open(IMPLANT_DEVICE_PATH, O_WRONLY);
 	if (fd < 0) {
 		error("Failed to communicate with the implant.\n");
 		return fd;

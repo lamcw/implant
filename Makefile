@@ -6,6 +6,10 @@ ifneq ($(IMLOG_LEVEL),)
 CCFLAGS += -DIMLOG_LEVEL=$(IMLOG_LEVEL)
 endif
 
+ifneq ($(IMPLANT_DEVICE_PATH),)
+CCFLAGS += -DIMPLANT_DEVICE_PATH=$(IMPLANT_DEVICE_PATH)
+endif
+
 # Builds the kernel module.
 kmodule:
 	make -C $(KDIR) M=`pwd`
