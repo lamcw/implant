@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Sphinx auto-generated documentation.
 - GitLab CI job to build and deploy documentation to GitLab pages.
+- Gitlab CI stage to test sc-client.
 - Implant implementation for hiding the kernel module from userland tools.
 - Client support for hiding the implant kernel module.
 - Client modular payload framework.

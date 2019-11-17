@@ -2,11 +2,23 @@ image: debian:buster-slim
 
 stages:
   - build
+  - test
 
 variables:
   LINUX_HEADER_VERSION: "4.19.0-6"
+  TEST_PATH: "/tmp/implant"
+  PROCESS_ID: "1"
+  HELP_OUTPUT: "client/test/help.txt"
 
 .update: &update apt-get update -y && apt-get upgrade -y
+
+.test:
+  stage: test
+  dependencies:
+    - client
+  before_script:
+    - *update
+    - touch ${TEST_PATH}
 
 kmod:
   stage: build
@@ -22,7 +34,10 @@ client:
     - *update
     - apt-get install make gcc libc6-dev linux-headers-${LINUX_HEADER_VERSION}-amd64 upx-ucl -y --no-install-recommends
   script:
-    - make KDIR=/lib/modules/${LINUX_HEADER_VERSION}-amd64/build sc-client
+    - make KDIR=/lib/modules/${LINUX_HEADER_VERSION}-amd64/build IMPLANT_DEVICE_PATH='\"${TEST_PATH}\"' sc-client
+  artifacts:
+    paths:
+      - sc-client
 
 format:
   stage: build
@@ -47,3 +62,153 @@ pages:
       - public
   only:
     - master
+
+test exec 0:0:
+  extends: .test
+  script:
+    - ./sc-client exec --bash whoami
+    - echo >> ${TEST_PATH}
+    - echo "exec --bash whoami" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test exec 0:1:
+  extends: .test
+  script:
+    - ./sc-client exec --hide whoami
+    - echo >> ${TEST_PATH}
+    - echo "exec --hide whoami" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test exec 0:2:
+  extends: .test
+  script:
+    - ./sc-client exec --bash --hide whoami
+    - echo >> ${TEST_PATH}
+    - echo "exec --bash --hide whoami" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test kill:
+  extends: .test
+  script:
+    - ./sc-client kill 1
+    - echo >> ${TEST_PATH}
+    - echo "kill 1" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test hide 0:0:
+  extends: .test
+  script:
+    - ./sc-client hide --module
+    - echo >> ${TEST_PATH}
+    - echo "hide --module" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test hide 0:1:
+  extends: .test
+  script:
+    - ./sc-client hide --pid ${PROCESS_ID}
+    - echo >> ${TEST_PATH}
+    - echo "hide --pid ${PROCESS_ID}" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test hide 0:2:
+  extends: .test
+  script:
+    - ./sc-client hide --file tmp
+    - echo >> ${TEST_PATH}
+    - echo "hide --file tmp" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test unhide 0:0:
+  extends: .test
+  script:
+    - ./sc-client unhide --module
+    - echo >> ${TEST_PATH}
+    - echo "unhide --module" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test unhide 0:1:
+  extends: .test
+  script:
+    - ./sc-client unhide --pid ${PROCESS_ID}
+    - echo >> ${TEST_PATH}
+    - echo "unhide --pid ${PROCESS_ID}" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test unhide 0:2:
+  extends: .test
+  script:
+    - ./sc-client unhide --file tmp
+    - echo >> ${TEST_PATH}
+    - echo "unhide --file tmp" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test set 0:0:
+  extends: .test
+  script:
+    - ./sc-client set ${PROCESS_ID} --uid 0
+    - echo >> ${TEST_PATH}
+    - echo "set ${PROCESS_ID} --uid 0" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test set 0:1:
+  extends: .test
+  script:
+    - ./sc-client set ${PROCESS_ID} --uid 0
+    - echo >> ${TEST_PATH}
+    - echo "set ${PROCESS_ID} --uid 0" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test set 0:2:
+  extends: .test
+  script:
+    - ./sc-client set ${PROCESS_ID} --uid 0
+    - echo >> ${TEST_PATH}
+    - echo "set ${PROCESS_ID} --uid 0" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test set 0:3:
+  extends: .test
+  script:
+    - ./sc-client set ${PROCESS_ID} --uid 0
+    - echo >> ${TEST_PATH}
+    - echo "set ${PROCESS_ID} --uid 0" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test unset 0:0:
+  extends: .test
+  script:
+    - ./sc-client unset ${PROCESS_ID} --uid
+    - echo >> ${TEST_PATH}
+    - echo "unset ${PROCESS_ID} --uid" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test unset 0:1:
+  extends: .test
+  script:
+    - ./sc-client unset ${PROCESS_ID} --uid
+    - echo >> ${TEST_PATH}
+    - echo "unset ${PROCESS_ID} --uid" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test unset 0:2:
+  extends: .test
+  script:
+    - ./sc-client unset ${PROCESS_ID} --uid
+    - echo >> ${TEST_PATH}
+    - echo "unset ${PROCESS_ID} --uid" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test unset 0:3:
+  extends: .test
+  script:
+    - ./sc-client unset ${PROCESS_ID} --uid
+    - echo >> ${TEST_PATH}
+    - echo "unset ${PROCESS_ID} --uid" > output.txt
+    - diff -Z ${TEST_PATH} output.txt
+
+test help:
+  extends: .test
+  script:
+    - ./sc-client help > output.txt
+    - diff -Z output.txt client/test/help.txt
