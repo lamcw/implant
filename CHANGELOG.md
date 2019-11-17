@@ -5,13 +5,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-- Fix merlin leaving artefact on unsuccessful exec
+### Fixed
+- Fix merlin leaving artefact on unsuccessful exec.
+
+### Removed
+- Support for file hiding in client.
 
 ## [0.3.0] - 2019-11-17
 ### Added
 - Sphinx auto-generated documentation.
 - GitLab CI job to build and deploy documentation to GitLab pages.
-- Gitlab CI stage to test sc-client.
+- GitLab CI stage to test sc-client.
 - Implant implementation for hiding the kernel module from userland tools.
 - Client support for hiding the implant kernel module.
 - Client modular payload framework.

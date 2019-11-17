@@ -111,14 +111,6 @@ test hide 0:1:
     - echo "hide --pid ${PROCESS_ID}" > output.txt
     - diff -Z ${TEST_PATH} output.txt
 
-test hide 0:2:
-  extends: .test
-  script:
-    - ./sc-client hide --file tmp
-    - echo >> ${TEST_PATH}
-    - echo "hide --file tmp" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
-
 test unhide 0:0:
   extends: .test
   script:
@@ -133,14 +125,6 @@ test unhide 0:1:
     - ./sc-client unhide --pid ${PROCESS_ID}
     - echo >> ${TEST_PATH}
     - echo "unhide --pid ${PROCESS_ID}" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
-
-test unhide 0:2:
-  extends: .test
-  script:
-    - ./sc-client unhide --file tmp
-    - echo >> ${TEST_PATH}
-    - echo "unhide --file tmp" > output.txt
     - diff -Z ${TEST_PATH} output.txt
 
 test set 0:0:

