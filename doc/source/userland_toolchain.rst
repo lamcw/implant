@@ -13,3 +13,4 @@ interface, and command shell.
    userland_toolchain/dropper.rst
    userland_toolchain/command_line_interface.rst
    userland_toolchain/command_shell.rst
+   userland_toolchain/payload.rst

