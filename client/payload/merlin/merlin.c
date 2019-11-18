@@ -47,6 +47,8 @@ int merlin_load()
 
 	ret_code = exec();
 	if (ret_code < 0) {
+		error("Merlin failed to exec, removing artefact\n");
+		remove(MERLIN_EXTRACT_PATH);
 		return ret_code;
 	}
 	alert("Merlin executed successfully\n");
