@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Fixed
 - Fix merlin leaving artefact on unsuccessful exec.
+- Fix client error codes not being propagated to the user.
 
 ### Removed
 - Support for file hiding in client.

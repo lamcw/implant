@@ -14,9 +14,11 @@ int main(int argc, char *argv[])
 
 	/* Dispatch does not need the name the program was called with.
 	 * Arguments are provided as needed to know. */
-	if (dispatch(argc - 1, &argv[1]) == 0)
-		return EXIT_SUCCESS;
+	int ret = dispatch(argc - 1, &argv[1]);
+	if (ret) {
+		char *arg = "help";
+		dispatch(1, &arg);
+	}
 
-	char *arg = "help";
-	return dispatch(1, &arg);
+	return ret;
 }
