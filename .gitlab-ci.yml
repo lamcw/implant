@@ -19,6 +19,8 @@ variables:
   before_script:
     - *update
     - touch ${TEST_PATH}
+  script:
+    - bash client/${CI_JOB_NAME}.sh
 
 kmod:
   stage: build
@@ -63,136 +65,50 @@ pages:
   only:
     - master
 
-test exec 0:0:
+### module tests: exec ###
+test/exec/0/0:
   extends: .test
-  script:
-    - ./sc-client exec --bash whoami
-    - echo >> ${TEST_PATH}
-    - echo "exec --bash whoami" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
+test/exec/0/1:
+  extends: .test
+test/exec/0/2:
+  extends: .test
 
-test exec 0:1:
+### module tests: kill ###
+test/kill/0/0:
   extends: .test
-  script:
-    - ./sc-client exec --hide whoami
-    - echo >> ${TEST_PATH}
-    - echo "exec --hide whoami" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
 
-test exec 0:2:
+### module tests: hide ###
+test/hide/0/0:
   extends: .test
-  script:
-    - ./sc-client exec --bash --hide whoami
-    - echo >> ${TEST_PATH}
-    - echo "exec --bash --hide whoami" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
+test/hide/0/1:
+  extends: .test
 
-test kill:
+### module tests: unhide ###
+test/unhide/0/0:
   extends: .test
-  script:
-    - ./sc-client kill 1
-    - echo >> ${TEST_PATH}
-    - echo "kill 1" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
+test/unhide/0/1:
+  extends: .test
 
-test hide 0:0:
+### module tests: set ###
+test/set/0/0:
   extends: .test
-  script:
-    - ./sc-client hide --module
-    - echo >> ${TEST_PATH}
-    - echo "hide --module" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
+test/set/0/1:
+  extends: .test
+test/set/0/2:
+  extends: .test
+test/set/0/3:
+  extends: .test
 
-test hide 0:1:
+### module tests: unset ###
+test/unset/0/0:
   extends: .test
-  script:
-    - ./sc-client hide --pid ${PROCESS_ID}
-    - echo >> ${TEST_PATH}
-    - echo "hide --pid ${PROCESS_ID}" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
+test/unset/0/1:
+  extends: .test
+test/unset/0/2:
+  extends: .test
+test/unset/0/3:
+  extends: .test
 
-test unhide 0:0:
+### module tests: help ###
+test/help/0/0:
   extends: .test
-  script:
-    - ./sc-client unhide --module
-    - echo >> ${TEST_PATH}
-    - echo "unhide --module" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
-
-test unhide 0:1:
-  extends: .test
-  script:
-    - ./sc-client unhide --pid ${PROCESS_ID}
-    - echo >> ${TEST_PATH}
-    - echo "unhide --pid ${PROCESS_ID}" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
-
-test set 0:0:
-  extends: .test
-  script:
-    - ./sc-client set ${PROCESS_ID} --uid 0
-    - echo >> ${TEST_PATH}
-    - echo "set ${PROCESS_ID} --uid 0" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
-
-test set 0:1:
-  extends: .test
-  script:
-    - ./sc-client set ${PROCESS_ID} --uid 0
-    - echo >> ${TEST_PATH}
-    - echo "set ${PROCESS_ID} --uid 0" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
-
-test set 0:2:
-  extends: .test
-  script:
-    - ./sc-client set ${PROCESS_ID} --uid 0
-    - echo >> ${TEST_PATH}
-    - echo "set ${PROCESS_ID} --uid 0" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
-
-test set 0:3:
-  extends: .test
-  script:
-    - ./sc-client set ${PROCESS_ID} --uid 0
-    - echo >> ${TEST_PATH}
-    - echo "set ${PROCESS_ID} --uid 0" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
-
-test unset 0:0:
-  extends: .test
-  script:
-    - ./sc-client unset ${PROCESS_ID} --uid
-    - echo >> ${TEST_PATH}
-    - echo "unset ${PROCESS_ID} --uid" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
-
-test unset 0:1:
-  extends: .test
-  script:
-    - ./sc-client unset ${PROCESS_ID} --uid
-    - echo >> ${TEST_PATH}
-    - echo "unset ${PROCESS_ID} --uid" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
-
-test unset 0:2:
-  extends: .test
-  script:
-    - ./sc-client unset ${PROCESS_ID} --uid
-    - echo >> ${TEST_PATH}
-    - echo "unset ${PROCESS_ID} --uid" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
-
-test unset 0:3:
-  extends: .test
-  script:
-    - ./sc-client unset ${PROCESS_ID} --uid
-    - echo >> ${TEST_PATH}
-    - echo "unset ${PROCESS_ID} --uid" > output.txt
-    - diff -Z ${TEST_PATH} output.txt
-
-test help:
-  extends: .test
-  script:
-    - ./sc-client help > output.txt
-    - diff -Z output.txt client/test/help.txt

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix merlin leaving artefact on unsuccessful exec.
 - Fix client error codes not being propagated to the user.
+- Refactor tests for Gitlab CI for more modular testing.
 
 ### Removed
 - Support for file hiding in client.
