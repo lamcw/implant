@@ -10,6 +10,10 @@ ifneq ($(IMPLANT_DEVICE_PATH),)
 CCFLAGS += -DIMPLANT_DEVICE_PATH=$(IMPLANT_DEVICE_PATH)
 endif
 
+ifeq ($(COVERAGE), true)
+CCFLAGS += -coverage
+endif
+
 # Builds the kernel module.
 kmodule:
 	make -C $(KDIR) M=`pwd`
