@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ./sc-client set 1 --uid 0
 echo >> ${TEST_PATH}

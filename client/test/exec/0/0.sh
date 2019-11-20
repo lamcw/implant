@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ./sc-client exec --bash whoami
 echo >> ${TEST_PATH}

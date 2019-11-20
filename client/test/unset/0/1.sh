@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ./sc-client unset 1 --uid
 echo >> ${TEST_PATH}

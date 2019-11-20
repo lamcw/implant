@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ./sc-client unhide --pid 1
 echo >> ${TEST_PATH}

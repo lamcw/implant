@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ./sc-client unhide --file tmp
 echo >> ${TEST_PATH}

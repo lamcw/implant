@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
-- README.
+- README for sc-implant project.
+- README for sc-client test suite.
 - CONTRIBUTING.
 
 ## [0.3.1] - 2019-11-18

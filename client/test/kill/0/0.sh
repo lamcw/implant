@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ./sc-client kill 1
 echo >> ${TEST_PATH}

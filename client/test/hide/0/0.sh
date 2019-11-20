@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ./sc-client hide --module
 echo >> ${TEST_PATH}
