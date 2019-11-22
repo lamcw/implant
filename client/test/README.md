@@ -33,7 +33,7 @@ communicating with the kernel module
 ...
 ```
 
-## Prequisites
+## Prerequisites
 
 1. All dependencies to compile `sc-client` (please refer to `/README.md`).
 2. Working on a Linux machine with `sh` and `diff`.
