@@ -1,0 +1,1 @@
+exec --hide --uid 0 whoami

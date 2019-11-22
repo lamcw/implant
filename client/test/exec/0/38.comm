@@ -1,0 +1,1 @@
+exec --hide --gid 0 whoami

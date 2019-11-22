@@ -1,0 +1,1 @@
+exec --gid 0 whoami

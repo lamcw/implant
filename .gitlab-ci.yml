@@ -75,6 +75,128 @@ test/exec/0/1:
   extends: .test
 test/exec/0/2:
   extends: .test
+test/exec/0/3:
+  extends: .test
+test/exec/0/4:
+  extends: .test
+test/exec/0/5:
+  extends: .test
+test/exec/0/6:
+  extends: .test
+test/exec/0/7:
+  extends: .test
+test/exec/0/8:
+  extends: .test
+test/exec/0/9:
+  extends: .test
+test/exec/0/10:
+  extends: .test
+test/exec/0/11:
+  extends: .test
+test/exec/0/12:
+  extends: .test
+test/exec/0/13:
+  extends: .test
+test/exec/0/14:
+  extends: .test
+test/exec/0/15:
+  extends: .test
+test/exec/0/16:
+  extends: .test
+test/exec/0/17:
+  extends: .test
+test/exec/0/18:
+  extends: .test
+test/exec/0/19:
+  extends: .test
+test/exec/0/20:
+  extends: .test
+test/exec/0/21:
+  extends: .test
+test/exec/0/22:
+  extends: .test
+test/exec/0/23:
+  extends: .test
+test/exec/0/24:
+  extends: .test
+test/exec/0/25:
+  extends: .test
+test/exec/0/26:
+  extends: .test
+test/exec/0/27:
+  extends: .test
+test/exec/0/28:
+  extends: .test
+test/exec/0/29:
+  extends: .test
+test/exec/0/30:
+  extends: .test
+test/exec/0/31:
+  extends: .test
+test/exec/0/32:
+  extends: .test
+test/exec/0/33:
+  extends: .test
+test/exec/0/34:
+  extends: .test
+test/exec/0/35:
+  extends: .test
+test/exec/0/36:
+  extends: .test
+test/exec/0/37:
+  extends: .test
+test/exec/0/38:
+  extends: .test
+test/exec/0/39:
+  extends: .test
+test/exec/0/40:
+  extends: .test
+test/exec/0/41:
+  extends: .test
+test/exec/0/42:
+  extends: .test
+test/exec/0/43:
+  extends: .test
+test/exec/0/44:
+  extends: .test
+test/exec/0/45:
+  extends: .test
+test/exec/0/46:
+  extends: .test
+test/exec/0/47:
+  extends: .test
+test/exec/0/48:
+  extends: .test
+test/exec/0/49:
+  extends: .test
+test/exec/0/50:
+  extends: .test
+test/exec/0/51:
+  extends: .test
+test/exec/0/52:
+  extends: .test
+test/exec/0/53:
+  extends: .test
+test/exec/0/54:
+  extends: .test
+test/exec/0/55:
+  extends: .test
+test/exec/0/56:
+  extends: .test
+test/exec/0/57:
+  extends: .test
+test/exec/0/58:
+  extends: .test
+test/exec/0/59:
+  extends: .test
+test/exec/0/60:
+  extends: .test
+test/exec/0/61:
+  extends: .test
+test/exec/0/62:
+  extends: .test
+test/exec/0/63:
+  extends: .test
 
 ### module tests: kill ###
 test/kill/0/0:

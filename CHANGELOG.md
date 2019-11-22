@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CONTRIBUTING.
 - Test coverage reporting.
 
+### Changed
+- Improved client test coverage for exec module.
+
 ## [0.3.1] - 2019-11-18
 ### Fixed
 - Fix merlin leaving artefact on unsuccessful exec.

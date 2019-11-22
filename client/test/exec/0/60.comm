@@ -1,0 +1,1 @@
+exec --bash --uid 0 --gid 0 whoami
