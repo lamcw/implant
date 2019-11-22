@@ -25,7 +25,7 @@ copyright = '2019, Jasper Lowell, Thomas Lam, Zac Ellis, Natham Lam, Thomas Ho'
 author = 'Jasper Lowell, Thomas Lam, Zac Ellis, Natham Lam, Thomas Ho'
 
 # The full version, including alpha/beta/rc tags
-release = 'v0.3.1'
+release = 'v0.3.2'
 
 
 # -- General configuration ---------------------------------------------------
