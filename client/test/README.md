@@ -58,13 +58,13 @@ with a newline character):
 hide --module
 
 ```
-2. Write a corresponding bash script which will run the command, then
+2. Write a corresponding shell script which will run the command, then
 `diff` the output with the expected-output-file.
 
 For example, for the same command above, `./sc-client hide --module`, 
 the test script would be called `0.sh`, and would contain:
 
-```bash
+```sh
 #!/bin/sh
 
 ./sc-client hide --module
@@ -86,7 +86,7 @@ $ make IMPLANT_DEVICE_PATH='\"${TEST_PATH}\"' sc-client
 3. Run the test. e.g.
 
 ```console
-$ bash client/test/0/0.sh
+$ sh client/test/0/0.sh
 ```
 
 If there is no output, that means the test has passed. The test should
