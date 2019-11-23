@@ -22,7 +22,7 @@ variables:
   script:
     - sh client/${CI_JOB_NAME}.sh
   after_script:
-    - sh <(curl -s https://codecov.io/bash -t ${CODECOV_TOKEN})
+    - bash <(curl https://codecov.io/bash -t ${CODECOV_TOKEN})
 
 .test_with_valgrind:
   extends: .test
@@ -51,6 +51,7 @@ client:
     paths:
       - sc-client
       - "*.gcno"
+    expire_in: 1 week
 
 format:
   stage: build

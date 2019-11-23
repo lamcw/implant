@@ -75,3 +75,7 @@ sc-client
 
 ### sphinx artefacts ###
 doc/build
+
+### test coverage artefacts ###
+*.gcda
+*.gcno
