@@ -1,1 +1,1 @@
-unset 1 --uid
+unset 1 --uid --gid

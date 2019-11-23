@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <grp.h>
+#include <pwd.h>
 
 enum { opt_set_uid, opt_set_gid };
 
@@ -19,53 +21,68 @@ static const ko_longopt_t set_longopts[] = {
 	{ NULL, 0, 0 }
 };
 
-static int set_uid(pid_t pid, uid_t uid)
+static int validate_uid(uid_t uid)
 {
-	char *msg = NULL;
+	struct passwd *tmp_passwd = getpwuid(uid);
+	if (tmp_passwd == NULL) {
+		switch (errno) {
+		/* Resource errors. */
+		case EINTR:
+		case EIO:
+		case EMFILE:
+		case ENFILE:
+		case ENOMEM:
+		case ERANGE:
+			error("Insufficient resources.\n");
+			break;
+		/* The given uid was not found. */
+		default:
+			error("The given uid was not found.\n");
+			break;
+		}
 
-	int ret = dynstrcat(&msg, "set ");
-	if (ret)
-		goto f;
-
-	char *tmp;
-	ret = asprintf(&tmp, "%d ", pid);
-	if (ret < 0) {
-		free(msg);
-		goto f;
+		/* It is possible that errno is 0. */
+		if (errno)
+			return -errno;
+		else
+			return -1;
 	}
 
-	ret = dynstrcat(&msg, tmp);
-	if (ret) {
-		free(tmp);
-		free(msg);
-		goto f;
-	}
-
-	free(tmp);
-	ret = asprintf(&tmp, "--uid %d ", uid);
-	if (ret < 0) {
-		free(msg);
-		goto f;
-	}
-
-	ret = dynstrcat(&msg, tmp);
-	if (ret) {
-		free(tmp);
-		free(msg);
-		goto f;
-	}
-
-	free(tmp);
-	ret = comm(msg, strlen(msg));
-	free(msg);
-	return ret;
-
-f:
-	error("Failed to allocate system resources.\n");
-	return ret;
+	alert("Validated uid.\n");
+	return 0;
 }
 
-static int set_gid(pid_t pid, gid_t gid)
+static int validate_gid(gid_t gid)
+{
+	struct group *tmp_group = getgrgid(gid);
+	if (tmp_group == NULL) {
+		switch (errno) {
+		case EINTR:
+		case EIO:
+		case EMFILE:
+		case ENFILE:
+		case ENOMEM:
+		case ERANGE:
+			error("Insufficient resources.\n");
+			break;
+		/* The given gid was not found. */
+		default:
+			error("The given gid was not found.\n");
+			break;
+		}
+
+		/* It is possible that errno is 0. */
+		if (errno)
+			return -errno;
+		else
+			return -1;
+	}
+
+	alert("Validated gid.\n");
+	return 0;
+}
+
+static int set(pid_t pid, uid_t uid, bool set_uid, gid_t gid, bool set_gid)
 {
 	char *msg = NULL;
 
@@ -81,24 +98,52 @@ static int set_gid(pid_t pid, gid_t gid)
 	ret = dynstrcat(&msg, tmp);
 	if (ret) {
 		free(tmp);
+		free(msg);
 		goto f;
 	}
 
-	ret = asprintf(&tmp, "--gid %d ", gid);
-	if (ret < 0)
-		goto f;
+	free(tmp);
+	if (set_uid) {
+		ret = validate_uid(uid);
+		if (ret)
+			return ret;
 
-	ret = dynstrcat(&msg, tmp);
-	if (ret) {
+		char *tmp;
+		ret = asprintf(&tmp, "--uid %d ", uid);
+		if (ret < 0)
+			goto f;
+
+		ret = dynstrcat(&msg, tmp);
 		free(tmp);
-		goto f;
+
+		if (ret)
+			goto f;
 	}
+
+	if (set_gid) {
+		ret = validate_gid(gid);
+		if (ret)
+			return ret;
+
+		char *tmp;
+		ret = asprintf(&tmp, "--gid %d ", gid);
+		if (ret < 0)
+			goto f;
+
+		ret = dynstrcat(&msg, tmp);
+		free(tmp);
+
+		if (ret)
+			goto f;
+	}
+
 	ret = comm(msg, strlen(msg));
 	free(msg);
 	return ret;
 
 f:
 	error("Failed to allocate system resources.\n");
+	free(msg);
 	return ret;
 }
 
@@ -145,19 +190,7 @@ int set_command_handler(int argc, char **argv)
 		return -1;
 	}
 
-	if (!uid_provided && !gid_provided) {
-		error("One of --uid or --gid is required.\n");
-		return -1;
-	}
+	int ret = set(pid, uid, uid_provided, gid, gid_provided);
 
-	if (uid_provided) {
-		int ret = set_uid(pid, uid);
-		if (ret)
-			return ret;
-	}
-
-	if (gid_provided)
-		return set_gid(pid, gid);
-
-	return 0;
+	return ret;
 }
