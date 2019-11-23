@@ -5,10 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+### Added
+- Tests for the `help` module in the client.
+
 ### Changed
 - Tests for `set` and `unset` modules in the client.
 
-### Fix
+### Fixed
 - `set`, `unset` and `kill` modules to ensure no memory leaks.
 - `set` module in client to accept multiple flags and validate `uid` and `gid`.
 

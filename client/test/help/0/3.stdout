@@ -1,0 +1,1 @@
+exec [--bash] [--hide] [--uid <uid>] [--gid <gid>] <command>
