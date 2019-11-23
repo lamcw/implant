@@ -1,5 +1,5 @@
 #!/bin/sh
 
-./sc-client exec --hide whoami
+./sc-client unset 1 --uid
 echo >> ${TEST_PATH}
 diff -Z ${TEST_PATH} client/test/unset/0/0.comm

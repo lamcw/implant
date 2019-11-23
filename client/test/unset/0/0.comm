@@ -1,1 +1,1 @@
-exec --hide whoami
+unset 1 --uid

@@ -14,6 +14,10 @@ ifeq ($(COVERAGE), true)
 CCFLAGS += -coverage
 endif
 
+ifeq ($(DEBUG), true)
+CCFLAGS += -g
+endif
+
 ifeq ($(PACKER),)
 PACKER = true
 endif

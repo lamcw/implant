@@ -24,6 +24,14 @@ variables:
   after_script:
     - sh <(curl -s https://codecov.io/bash -t ${CODECOV_TOKEN})
 
+.test_with_valgrind:
+  extends: .test
+  before_script:
+    - *update
+    - apt-get install valgrind curl gcc ca-certificates -y --no-install-recommends
+    - touch ${TEST_PATH}
+  after_script:
+
 kmod:
   stage: build
   before_script:
@@ -38,7 +46,7 @@ client:
     - *update
     - apt-get install make gcc libc6-dev linux-headers-${LINUX_HEADER_VERSION}-amd64 upx-ucl -y --no-install-recommends
   script:
-    - make KDIR=/lib/modules/${LINUX_HEADER_VERSION}-amd64/build IMPLANT_DEVICE_PATH='\"${TEST_PATH}\"' COVERAGE=true sc-client
+    - make KDIR=/lib/modules/${LINUX_HEADER_VERSION}-amd64/build IMPLANT_DEVICE_PATH='\"${TEST_PATH}\"' COVERAGE=true PACKER=false DEBUG=true sc-client
   artifacts:
     paths:
       - sc-client
@@ -198,9 +206,15 @@ test/exec/0/62:
 test/exec/0/63:
   extends: .test
 
+test/exec/1/0:
+  extends: .test_with_valgrind
+
 ### module tests: kill ###
 test/kill/0/0:
   extends: .test
+
+test/kill/1/0:
+  extends: .test_with_valgrind
 
 ### module tests: hide ###
 test/hide/0/0:
@@ -208,11 +222,21 @@ test/hide/0/0:
 test/hide/0/1:
   extends: .test
 
+test/hide/1/0:
+  extends: .test_with_valgrind
+test/hide/1/1:
+  extends: .test_with_valgrind
+
 ### module tests: unhide ###
 test/unhide/0/0:
   extends: .test
 test/unhide/0/1:
   extends: .test
+
+test/unhide/1/0:
+  extends: .test_with_valgrind
+test/unhide/1/1:
+  extends: .test_with_valgrind
 
 ### module tests: set ###
 test/set/0/0:
@@ -224,6 +248,15 @@ test/set/0/2:
 test/set/0/3:
   extends: .test
 
+test/set/1/0:
+  extends: .test_with_valgrind
+test/set/1/1:
+  extends: .test_with_valgrind
+test/set/1/2:
+  extends: .test_with_valgrind
+test/set/1/3:
+  extends: .test_with_valgrind
+
 ### module tests: unset ###
 test/unset/0/0:
   extends: .test
@@ -234,6 +267,18 @@ test/unset/0/2:
 test/unset/0/3:
   extends: .test
 
+test/unset/1/0:
+  extends: .test_with_valgrind
+test/unset/1/1:
+  extends: .test_with_valgrind
+test/unset/1/2:
+  extends: .test_with_valgrind
+test/unset/1/3:
+  extends: .test_with_valgrind
+
 ### module tests: help ###
 test/help/0/0:
   extends: .test
+
+test/help/1/0:
+  extends: .test_with_valgrind
