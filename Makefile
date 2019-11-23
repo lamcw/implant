@@ -14,6 +14,10 @@ ifeq ($(COVERAGE), true)
 CCFLAGS += -coverage
 endif
 
+ifeq ($(PACKER),)
+PACKER = true
+endif
+
 # Builds the kernel module.
 kmodule:
 	make -C $(KDIR) M=`pwd`
@@ -28,7 +32,7 @@ implant.ko.o: kmodule
 CLIENTSRCS := $(wildcard client/src/*.c) $(wildcard client/src/*/*.c)
 sc-client: implant.ko.o $(CLIENTSRCS) $(TARGETSRCS) $(TARGETOBJS)
 	$(CC) $(CFLAGS) $(CCFLAGS) $^ -o $@
-	upx $@
+	if [ $(PACKER) = true ]; then upx $@; fi
 
 # Compile the Linux kernel.
 #
