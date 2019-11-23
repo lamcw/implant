@@ -35,22 +35,30 @@ static int unset(pid_t pid, bool unset_uid, bool unset_gid)
 	ret = dynstrcat(&msg, tmp);
 	if (ret) {
 		free(tmp);
+		free(msg);
 		goto f;
 	}
 
 	if (unset_uid) {
 		ret = dynstrcat(&msg, "--uid ");
-		if (ret)
+		if (ret) {
+			free(tmp);
+			free(msg);
 			goto f;
+		}
 	}
 
 	if (unset_gid) {
 		ret = dynstrcat(&msg, "--gid");
-		if (ret)
+		if (ret) {
+			free(tmp);
+			free(msg);
 			goto f;
+		}
 	}
 
 	ret = comm(msg, strlen(msg));
+	free(tmp);
 	free(msg);
 	return ret;
 

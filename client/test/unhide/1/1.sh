@@ -1,3 +1,3 @@
 #!/bin/sh
 
-valgrind --error-exitcode=1 ./sc-client unhide --pid 1
+valgrind --error-exitcode=1 --leak-check=full ./sc-client unhide --pid 1

@@ -1,3 +1,3 @@
 #!/bin/sh
 
-valgrind --error-exitcode=1 ./sc-client help
+valgrind --error-exitcode=1 --leak-check=full ./sc-client help

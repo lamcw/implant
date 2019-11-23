@@ -16,7 +16,9 @@ static int kill(pid_t pid)
 	if (ret < 0)
 		goto f;
 
-	return comm(msg, strlen(msg));
+	ret = comm(msg, strlen(msg));
+	free(msg);
+	return ret;
 
 f:
 	error("Failed to allocate system resources.\n");

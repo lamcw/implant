@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+### Fixed
+- `set`, `unset` and `kill` modules to ensure no memory leaks.
+
 ## [0.3.3] - 2019-11-23
 ### Added
 - Tests with valgrind to check for memory leaks in the client.
@@ -16,13 +20,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Test coverage reporting.
 
 ### Changed
-- Improved client test coverage for exec module.
+- Tests for exec module to improved client test coverage.
 
 ## [0.3.1] - 2019-11-18
 ### Fixed
-- Fix merlin leaving artefact on unsuccessful exec.
-- Fix client error codes not being propagated to the user.
-- Refactor tests for Gitlab CI for more modular testing.
+- Merlin leaving artefact on unsuccessful exec.
+- Client error codes not being propagated to the user.
+
+### Changed
+- Structure of tests for Gitlab CI for more modular testing.
 
 ### Removed
 - Support for file hiding in client.

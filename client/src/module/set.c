@@ -29,25 +29,33 @@ static int set_uid(pid_t pid, uid_t uid)
 
 	char *tmp;
 	ret = asprintf(&tmp, "%d ", pid);
-	if (ret < 0)
+	if (ret < 0) {
+		free(msg);
 		goto f;
+	}
 
 	ret = dynstrcat(&msg, tmp);
 	if (ret) {
 		free(tmp);
+		free(msg);
 		goto f;
 	}
 
+	free(tmp);
 	ret = asprintf(&tmp, "--uid %d ", uid);
-	if (ret < 0)
+	if (ret < 0) {
+		free(msg);
 		goto f;
+	}
 
 	ret = dynstrcat(&msg, tmp);
 	if (ret) {
 		free(tmp);
+		free(msg);
 		goto f;
 	}
 
+	free(tmp);
 	ret = comm(msg, strlen(msg));
 	free(msg);
 	return ret;

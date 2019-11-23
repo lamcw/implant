@@ -1,3 +1,3 @@
 #!/bin/sh
 
-valgrind --error-exitcode=1 ./sc-client hide --module
+valgrind --error-exitcode=1 --leak-check=full ./sc-client hide --module
