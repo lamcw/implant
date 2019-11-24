@@ -176,7 +176,7 @@ int exec_handler(int argc, char **argv)
 			proc_set_uid(pid, uid);
 
 		if (set_gid)
-			proc_set_gid(pid, uid);
+			proc_set_gid(pid, gid);
 	}
 
 	return err ? -EINVAL : 0;
