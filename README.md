@@ -56,3 +56,10 @@ See [CHANGELOG.md](./CHANGELOG.md).
 ## License
 
 [GNU GPLv3](./LICENSE).
+
+## Third Party Library Usage
+
+The project uses
+[ketopt](https://github.com/attractivechaos/klib/blob/master/ketopt.h) for
+argument parsing in both the userland toolchain and the kernel module. The
+example payload is [merlin](https://github.com/Ne0nd0g/merlin).
