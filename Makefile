@@ -66,6 +66,7 @@ ksource:
 clean: payloads_clean
 	make -C $(KDIR) M=`pwd` clean; \
 		rm -rf sc-client;
+		rm -rf *.gcno *.gcda
 
 distclean: clean
 	rm -rf usr ksource

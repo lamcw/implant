@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Tests for the `help` module in the client.
 - Tests for the `payloads` module in the client.
+- Tests for invalid inputs to the client.
 
 ### Changed
 - Tests for `set` and `unset` modules in the client.
